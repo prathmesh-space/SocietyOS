@@ -143,13 +143,16 @@ afterAll(async () => {
 });
 
 async function cleanupTestData() {
+  try {
+    await mongoose.connection.db.collection('visitors').drop();
+  } catch (e) {}
+
   const testSocieties = await Society.find({
     name: { $in: ['Visitor Test Society A', 'Visitor Test Society B'] },
   }).lean();
   const testSocietyIds = testSocieties.map(s => s._id);
 
   if (testSocietyIds.length > 0) {
-    await Visitor.deleteMany({ societyId: { $in: testSocietyIds } }).setOptions({ unscoped: true });
     await Unit.deleteMany({ societyId: { $in: testSocietyIds } }).setOptions({ unscoped: true });
     await User.deleteMany({ societyId: { $in: testSocietyIds } }).setOptions({ unscoped: true });
     await mongoose.connection.collection('auditlogs').deleteMany({
@@ -502,5 +505,66 @@ describe('Visitors, QR Pre-approvals, and Watchman Portal API', () => {
     expect(body.results[2].code).toBe('unverified');
     const vis3 = await Visitor.findById(body.results[2].visitorId).setOptions({ unscoped: true });
     expect(vis3!.entryTime.toISOString()).toBe(thirtyMinsAgo); // Verify original client capture timestamp preserved!
+  });
+
+  test('Race Condition / Concurrent Scans: Enforces database-layer unique token constraint when scanned simultaneously', async () => {
+    // 1. Generate a valid token
+    const start = new Date();
+    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    const reqToken = new NextRequest('http://localhost/api/resident/visitors/pre-approve', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `Bearer ${residentA1Token}`,
+      },
+      body: JSON.stringify({
+        visitorName: 'Race Guest',
+        startWindow: start.toISOString(),
+        endWindow: end.toISOString(),
+      }),
+    });
+    const resToken = await preApproveHandler(reqToken, {} as any);
+    const raceToken = (await resToken.json()).token;
+
+    // 2. Dispatch two check-in scans in parallel (simulating concurrency)
+    const req1 = new NextRequest('http://localhost/api/watchman/visitors/scan', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `Bearer ${watchmanA1Token}`,
+      },
+      body: JSON.stringify({ token: raceToken }),
+    });
+
+    const req2 = new NextRequest('http://localhost/api/watchman/visitors/scan', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `Bearer ${watchmanA1Token}`,
+      },
+      body: JSON.stringify({ token: raceToken }),
+    });
+
+    // Execute concurrently
+    const [res1, res2] = await Promise.all([
+      scanHandler(req1, {} as any),
+      scanHandler(req2, {} as any),
+    ]);
+
+    // Assert that one request succeeded (201) and one failed (400 already-used)
+    const statuses = [res1.status, res2.status];
+    expect(statuses).toContain(201);
+    expect(statuses).toContain(400);
+
+    const body1 = await res1.json();
+    const body2 = await res2.json();
+
+    const codes = [body1.code, body2.code];
+    expect(codes).toContain('verified');
+    expect(codes).toContain('already-used');
+
+    // Assert only one Visitor document is created in the database
+    const count = await Visitor.countDocuments({ token: raceToken }).setOptions({ unscoped: true });
+    expect(count).toBe(1);
   });
 });

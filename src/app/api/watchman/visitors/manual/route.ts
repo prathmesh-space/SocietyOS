@@ -42,7 +42,7 @@ export const POST = withAuth(
         preApproved: false,
         verifiedAt: null,
         verificationStatus: 'unverified',
-        token: null,
+        token: undefined,
       });
 
       // Log manual entry in AuditLog

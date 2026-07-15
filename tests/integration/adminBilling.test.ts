@@ -158,8 +158,8 @@ describe('Maintenance Billing Management API & Late Fees Job', () => {
     const body = await res.json();
     expect(body.count).toBe(2); // Flat 101 and Flat 102
 
-    // Verify bills were generated in database
-    const bills = await MaintenanceBill.find({ billingPeriod: '2026-07' })
+    // Verify bills were generated in database for society A
+    const bills = await MaintenanceBill.find({ societyId: societyA._id, billingPeriod: '2026-07' })
       .lean()
       .setOptions({ unscoped: true });
     expect(bills.length).toBe(2);

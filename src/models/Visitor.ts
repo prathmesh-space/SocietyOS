@@ -54,8 +54,6 @@ const visitorSchema = new Schema<IVisitor>(
     },
     token: {
       type: String,
-      default: null,
-      index: true,
     },
   },
   {
@@ -72,6 +70,9 @@ const visitorSchema = new Schema<IVisitor>(
 
 // Apply tenant scoping plugin - scoping boundary checks
 visitorSchema.plugin(tenantScopingPlugin);
+
+// Unique sparse index on token to prevent concurrent scan race conditions (single-use QR token validation)
+visitorSchema.index({ token: 1 }, { unique: true, sparse: true });
 
 const Visitor: Model<IVisitor> =
   mongoose.models.Visitor || mongoose.model<IVisitor>('Visitor', visitorSchema);

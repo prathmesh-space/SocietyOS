@@ -145,16 +145,30 @@ export const POST = withAuth(
             }
 
             // Valid: Create pre-approved entry
-            const visitor = await Visitor.create({
-              societyId: auth.societyId,
-              unitId: unitDoc._id,
-              visitorName: tokVisitorName,
-              entryTime: clientEntryTime, // Original client capture time
-              preApproved: true,
-              verifiedAt: new Date(),
-              verificationStatus: 'verified',
-              token,
-            });
+            let visitor;
+            try {
+              visitor = await Visitor.create({
+                societyId: auth.societyId,
+                unitId: unitDoc._id,
+                visitorName: tokVisitorName,
+                entryTime: clientEntryTime, // Original client capture time
+                preApproved: true,
+                verifiedAt: new Date(),
+                verificationStatus: 'verified',
+                token,
+              });
+            } catch (err: any) {
+              if (err.code === 11000 || err.message?.includes('E11000')) {
+                syncResults.push({
+                  index: i,
+                  success: false,
+                  error: 'Pre-approval token has already been used',
+                  code: 'already-used',
+                });
+                continue;
+              }
+              throw err;
+            }
 
             // Log entry
             await logAuditEvent({
@@ -208,7 +222,7 @@ export const POST = withAuth(
               preApproved: false,
               verifiedAt: null,
               verificationStatus: 'unverified',
-              token: null,
+              token: undefined,
             });
 
             // Log entry

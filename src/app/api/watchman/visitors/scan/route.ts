@@ -80,16 +80,27 @@ export const POST = withAuth(
       }
 
       // Valid case: Create Visitor check-in record
-      const visitor = await Visitor.create({
-        societyId: auth.societyId,
-        unitId: new mongoose.Types.ObjectId(unitId),
-        visitorName,
-        entryTime: new Date(),
-        preApproved: true,
-        verifiedAt: new Date(),
-        verificationStatus: 'verified',
-        token,
-      });
+      let visitor;
+      try {
+        visitor = await Visitor.create({
+          societyId: auth.societyId,
+          unitId: new mongoose.Types.ObjectId(unitId),
+          visitorName,
+          entryTime: new Date(),
+          preApproved: true,
+          verifiedAt: new Date(),
+          verificationStatus: 'verified',
+          token,
+        });
+      } catch (err: any) {
+        if (err.code === 11000 || err.message?.includes('E11000')) {
+          return NextResponse.json(
+            { error: 'Pre-approval token has already been used (duplicate scan rejected)', code: 'already-used' },
+            { status: 400 }
+          );
+        }
+        throw err;
+      }
 
       // Log manual/preapproved entry in AuditLog
       await logAuditEvent({
