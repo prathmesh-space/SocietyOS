@@ -7,7 +7,7 @@ import { resolve } from 'path';
 config({ path: resolve(__dirname, '../../.env.local') });
 
 import { POST as generateBillsHandler } from '@/app/api/admin/bills/generate/route';
-import { POST as lateFeesHandler } from '@/app/api/jobs/late-fees/route';
+import { POST as lateFeesHandler, GET as lateFeesGetHandler } from '@/app/api/jobs/late-fees/route';
 import Society from '@/models/Society';
 import Unit from '@/models/Unit';
 import User from '@/models/User';
@@ -298,5 +298,39 @@ describe('Maintenance Billing Management API & Late Fees Job', () => {
       .setOptions({ unscoped: true });
     expect(doubleUpdatedBill!.amount).toBe(1100); // Remains 1100, not 1200 or 1210
     expect(doubleUpdatedBill!.lateFeeAmount).toBe(100);
+  });
+
+  test('Vercel Cron Path: GET /api/jobs/late-fees applies late fees identically to POST', async () => {
+    // Create a bill due 15 days ago (past the 5 days grace period) for Society A, unit A2
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+
+    const cronTestBill = await MaintenanceBill.create({
+      societyId: societyA._id,
+      unitId: unitA2._id,
+      billingPeriod: '2026-04',
+      amount: 2000,
+      dueDate: fifteenDaysAgo,
+      status: 'Unpaid',
+      lateFeeApplied: false,
+    });
+
+    // Invoke via GET — this is the actual method Vercel Cron uses
+    const req = new NextRequest('http://localhost/api/jobs/late-fees', {
+      method: 'GET',
+    });
+    const res = await lateFeesGetHandler(req);
+    expect(res.status).toBe(200);
+
+    const body = await res.json();
+    expect(body.societiesProcessed).toBeGreaterThanOrEqual(1);
+
+    // Verify late fee was applied (10% of 2000 = 200)
+    const updatedBill = await MaintenanceBill.findById(cronTestBill._id)
+      .setOptions({ unscoped: true });
+    expect(updatedBill!.amount).toBe(2200);
+    expect(updatedBill!.lateFeeAmount).toBe(200);
+    expect(updatedBill!.lateFeeApplied).toBe(true);
+    expect(updatedBill!.status).toBe('Overdue');
   });
 });

@@ -4,8 +4,11 @@ import Society from '@/models/Society';
 import MaintenanceBill from '@/models/MaintenanceBill';
 import { logAuditEvent } from '@/lib/audit/logger';
 
-// POST /api/jobs/late-fees — Run the late-fee calculation job across all active societies
-export async function POST(req: NextRequest) {
+// --- Shared logic for the late-fee calculation job ---
+// Extracted so both GET (Vercel Cron's actual invocation method) and
+// POST (manual/test invocation) run identical code paths.
+
+async function runLateFeeJob(req: NextRequest): Promise<NextResponse> {
   try {
     const authHeader = req.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;
@@ -110,4 +113,16 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+// GET /api/jobs/late-fees — Vercel Cron invocation path.
+// Vercel Cron always triggers via HTTP GET with Authorization: Bearer <CRON_SECRET>.
+// It also sends user-agent: vercel-cron/1.0 and x-vercel-cron-schedule headers.
+export async function GET(req: NextRequest) {
+  return runLateFeeJob(req);
+}
+
+// POST /api/jobs/late-fees — Manual/test invocation path (kept for backward compatibility).
+export async function POST(req: NextRequest) {
+  return runLateFeeJob(req);
 }
