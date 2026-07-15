@@ -14,8 +14,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
     }
 
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    if (!webhookSecret) {
+      console.error('[Webhook:Razorpay] RAZORPAY_WEBHOOK_SECRET is not configured');
+      return NextResponse.json({ error: 'Webhook configuration error' }, { status: 500 });
+    }
+
     const rawBody = await req.text();
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET || 'placeholder_webhook_secret';
 
     // Verify signature
     const expectedSignature = crypto

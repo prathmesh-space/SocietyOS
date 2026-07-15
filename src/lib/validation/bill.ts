@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 export const generateBillsSchema = z.object({
   billingPeriod: z.string().regex(/^\d{4}-\d{2}$/, 'Billing period must be YYYY-MM'),
-  dueDate: z.string().transform((v) => new Date(v)),
+  dueDate: z.preprocess(
+    (val) => (typeof val === 'string' || val instanceof Date ? new Date(val) : val),
+    z.date({ invalid_type_error: 'Due date must be a valid Date' })
+  ),
   overrides: z
     .array(
       z.object({

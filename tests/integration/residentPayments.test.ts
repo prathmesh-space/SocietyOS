@@ -334,6 +334,37 @@ describe('Razorpay Order Creation, Webhooks, Receipts, and Security', () => {
     expect(body.error).toBe('Invalid signature');
   });
 
+  test('Webhook Signature Verification: Rejected with 500 if webhook secret is not configured', async () => {
+    const originalSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    delete process.env.RAZORPAY_WEBHOOK_SECRET;
+
+    const payload = {
+      id: 'evt_test_unconfig',
+      entity: 'event',
+      event: 'payment.captured',
+      payload: {
+        payment: {
+          entity: {
+            id: 'pay_unconfig_test',
+            amount: 500000,
+            order_id: 'order_some_fake_id',
+            status: 'captured',
+          },
+        },
+      },
+    };
+
+    const req = createWebhookRequest(payload, 'any_secret');
+    const res = await webhookHandler(req);
+    expect(res.status).toBe(500);
+
+    const body = await res.json();
+    expect(body.error).toBe('Webhook configuration error');
+
+    // Restore secret
+    process.env.RAZORPAY_WEBHOOK_SECRET = originalSecret;
+  });
+
   test('Webhook processing: payment.captured event updates status & creates receipt', async () => {
     // 1. Create a pending payment
     const payment = await Payment.create({
