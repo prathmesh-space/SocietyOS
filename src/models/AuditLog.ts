@@ -23,6 +23,7 @@ export const AUDIT_ACTIONS = [
   'complaint.update',
   'complaint.resolve',
   'complaint.close',
+  'complaint.assign',
   'visitor.manual_entry',
   'visitor.pre_approve',
   'notice.create',
