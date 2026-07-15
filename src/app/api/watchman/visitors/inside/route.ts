@@ -14,7 +14,7 @@ export const GET = withAuth(
         entryTime: { $ne: null },
         exitTime: null,
       })
-        .populate('unitId', 'unitNumber floor')
+        .populate({ path: 'unitId', select: 'unitNumber floor', options: { unscoped: true } })
         .sort({ entryTime: -1 })
         .lean();
 
