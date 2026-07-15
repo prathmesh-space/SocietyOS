@@ -344,7 +344,7 @@ describe('Complaints Management & Status Pipeline API', () => {
       entityId: complaintId,
     }).lean().setOptions({ unscoped: true });
     expect(logs.length).toBe(1);
-    expect(logs[0]!.afterState.assignedAdminId.toString()).toBe(adminA2._id.toString());
+    expect((logs[0]!.afterState as any).assignedAdminId.toString()).toBe(adminA2._id.toString());
   });
 
   test('Status Pipeline: Skipping pipeline from Open -> Closed must be rejected', async () => {
@@ -488,6 +488,6 @@ describe('Complaints Management & Status Pipeline API', () => {
       entityId: body.complaint.id,
     }).lean().setOptions({ unscoped: true });
     expect(newLogs.length).toBe(1);
-    expect(newLogs[0]!.afterState.reopenedFromId.toString()).toBe(complaintId);
+    expect((newLogs[0]!.afterState as any).reopenedFromId.toString()).toBe(complaintId);
   });
 });

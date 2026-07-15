@@ -124,6 +124,7 @@ beforeAll(async () => {
   superAdminToken = signAccessToken({
     userId: new mongoose.Types.ObjectId().toString(),
     role: 'superadmin',
+    societyId: null,
   });
 });
 

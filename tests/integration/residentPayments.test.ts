@@ -193,10 +193,10 @@ afterAll(async () => {
 
 async function cleanupTestData() {
   try {
-    await mongoose.connection.db.collection('payments').drop();
+    await mongoose.connection.db!.collection('payments').drop();
   } catch (e) {}
   try {
-    await mongoose.connection.db.collection('receipts').drop();
+    await mongoose.connection.db!.collection('receipts').drop();
   } catch (e) {}
 
   const testSocieties = await Society.find({
@@ -423,7 +423,7 @@ describe('Razorpay Order Creation, Webhooks, Receipts, and Security', () => {
       action: 'payment.received',
     }).lean().setOptions({ unscoped: true });
     expect(logs.length).toBe(1);
-    expect(logs[0]!.afterState.receiptNumber).toBe(resBody.receiptNumber);
+    expect((logs[0]!.afterState as any).receiptNumber).toBe(resBody.receiptNumber);
   });
 
   test('Webhook Idempotency: Re-sending payment.captured is a no-op (does not re-process)', async () => {

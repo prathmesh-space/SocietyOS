@@ -144,7 +144,7 @@ afterAll(async () => {
 
 async function cleanupTestData() {
   try {
-    await mongoose.connection.db.collection('visitors').drop();
+    await mongoose.connection.db!.collection('visitors').drop();
   } catch (e) {}
 
   const testSocieties = await Society.find({

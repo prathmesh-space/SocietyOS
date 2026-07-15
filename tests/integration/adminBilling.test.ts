@@ -284,8 +284,8 @@ describe('Maintenance Billing Management API & Late Fees Job', () => {
       action: 'bill.late_fee_applied',
     }).lean().setOptions({ unscoped: true });
     expect(logs.length).toBe(1);
-    expect(logs[0]!.afterState.totalBillsUpdated).toBe(1);
-    expect(logs[0]!.afterState.totalLateFeeApplied).toBe(100);
+    expect((logs[0]!.afterState as any).totalBillsUpdated).toBe(1);
+    expect((logs[0]!.afterState as any).totalLateFeeApplied).toBe(100);
 
     // 3. Trigger late fees job a second time to ensure idempotency (should not double-apply)
     const req2 = new NextRequest('http://localhost/api/jobs/late-fees', {
