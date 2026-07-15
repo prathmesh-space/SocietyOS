@@ -1,4 +1,4 @@
-# SocietyOS Phase 1+2+3 — Task Tracker
+# SocietyOS Phase 1+2+3+4 — Task Tracker
 
 ## 1. Project Scaffolding
 - [x] Initialize Next.js 14 with App Router, TypeScript, TailwindCSS, ESLint
@@ -20,6 +20,7 @@
 - [x] MaintenanceBill model
 - [x] Payment model
 - [x] Receipt model
+- [x] Complaint model
 
 ## 4. Authentication System
 - [x] JWT utilities (`src/lib/auth/jwt.ts`)
@@ -33,6 +34,7 @@
 - [x] Unit schemas
 - [x] User schemas
 - [x] Bill/Payment schemas
+- [x] Complaint schemas
 
 ## 6. API Routes — Auth
 - [x] POST /api/auth/signup
@@ -45,7 +47,7 @@
 - [x] GET/POST /api/superadmin/societies (Onboarding with Activation Link)
 - [x] GET/PATCH/DELETE /api/superadmin/societies/[id]
 
-## 8. API Routes — Admin (Units/Settings/Watchman/Bills)
+## 8. API Routes — Admin (Units/Settings/Watchman/Bills/Complaints)
 - [x] GET/POST /api/admin/units
 - [x] GET/PATCH/DELETE /api/admin/units/[id]
 - [x] POST /api/admin/units/bulk-import
@@ -54,10 +56,16 @@
 - [x] POST /api/admin/users/watchman
 - [x] GET/PATCH /api/admin/settings
 - [x] POST /api/admin/bills/generate (Bulk Bill Generation with overrides)
+- [x] GET /api/admin/complaints (filterable by status)
+- [x] PATCH /api/admin/complaints/[id]/assign (Assign to other Admins)
+- [x] PATCH /api/admin/complaints/[id]/status (Linear status pipeline updates)
 
-## 9. API Routes — Resident (Payments/Receipts)
+## 9. API Routes — Resident (Payments/Receipts/Complaints)
 - [x] POST /api/resident/payments/create-order (Razorpay order creation)
 - [x] GET /api/resident/receipts/[id] (Receipt download/view)
+- [x] GET/POST /api/resident/complaints (File/list own complaints)
+- [x] GET /api/resident/complaints/[id] (View own complaint details)
+- [x] POST /api/resident/complaints/[id]/reopen (Reopen closed complaint into a new document)
 
 ## 10. Webhooks & Background Jobs
 - [x] POST /api/webhooks/razorpay (Idempotent captured/failed handler)
@@ -65,6 +73,7 @@
 
 ## 11. Audit Log Infrastructure
 - [x] Audit logger utility with support for system/webhook actors
+- [x] Register new complaint audit actions (`complaint.create`, `complaint.assign`, `complaint.update`, `complaint.resolve`, `complaint.close`)
 
 ## 12. Seed Script
 - [ ] scripts/seed.ts
@@ -79,6 +88,7 @@
 - [x] Integration: Watchman Account Creation tests (`tests/integration/adminWatchman.test.ts`)
 - [x] Integration: Admin Billing & Late Fees tests (`tests/integration/adminBilling.test.ts`)
 - [x] Integration: Resident Payments, Webhooks, and Receipts tests (`tests/integration/residentPayments.test.ts`)
+- [x] Integration: Complaints Management & Pipeline tests (`tests/integration/complaints.test.ts`)
 
 ## 14. CI/CD
 - [ ] .github/workflows/ci.yml
