@@ -64,21 +64,40 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Check for duplicate email within society
+    // Check for duplicate email globally
     const existingUser = await User.findOne(
-      { societyId: society._id, email },
+      { email },
       null,
       { unscoped: true }
     );
     if (existingUser) {
       return NextResponse.json(
-        { error: 'An account with this email already exists in this society' },
+        { error: 'An account with this email already exists' },
         { status: 409 }
       );
     }
 
     // Hash password
     const passwordHash = await hashPassword(password);
+
+    // Check for duplicate claims on the same Unit (occupied or contested)
+    let contestedUnit = false;
+    if (unitId) {
+      const existingClaims = await User.find(
+        { unitId, role: 'resident', status: { $in: ['active', 'pending'] } },
+        null,
+        { unscoped: true }
+      );
+      if (existingClaims.length > 0) {
+        contestedUnit = true;
+        // Flag all existing claims for this unit as contested
+        await User.updateMany(
+          { _id: { $in: existingClaims.map((c) => c._id) } },
+          { $set: { contestedUnit: true } },
+          { unscoped: true } as any
+        );
+      }
+    }
 
     // Create user with pending status (awaiting admin approval)
     const user = await User.create({
@@ -90,6 +109,7 @@ export async function POST(req: NextRequest) {
       name,
       phone: phone || '',
       status: 'pending', // Resident must be approved by Admin
+      contestedUnit,
     });
 
     return NextResponse.json(

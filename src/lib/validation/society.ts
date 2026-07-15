@@ -18,16 +18,6 @@ export const createSocietySchema = z.object({
   // First admin user for the society
   adminEmail: z.string().email('Invalid admin email').trim().toLowerCase(),
   adminName: z.string().min(1, 'Admin name is required').max(100).trim(),
-  adminPassword: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/\d/, 'Password must contain at least one digit')
-    .regex(
-      /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/,
-      'Password must contain at least one special character'
-    ),
 });
 
 export const updateSocietySchema = z.object({

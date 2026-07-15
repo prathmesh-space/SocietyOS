@@ -25,6 +25,9 @@ export interface IUser extends Document {
   status: UserStatus;
   refreshTokenHash: string | null;
   refreshTokenFamily: string | null; // For token rotation / reuse detection
+  activationToken: string | null;
+  activationTokenExpires: Date | null;
+  contestedUnit: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,6 +39,7 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       required: [true, 'Email is required'],
+      unique: true,
       trim: true,
       lowercase: true,
       validate: {
@@ -97,6 +101,20 @@ const userSchema = new Schema<IUser>(
       default: null,
       select: false,
     },
+    activationToken: {
+      type: String,
+      default: null,
+      select: false,
+    },
+    activationTokenExpires: {
+      type: Date,
+      default: null,
+      select: false,
+    },
+    contestedUnit: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
@@ -107,14 +125,13 @@ const userSchema = new Schema<IUser>(
         delete ret.passwordHash;
         delete ret.refreshTokenHash;
         delete ret.refreshTokenFamily;
+        delete ret.activationToken;
+        delete ret.activationTokenExpires;
         return ret;
       },
     },
   }
 );
-
-// Compound unique index: email unique within a society
-userSchema.index({ societyId: 1, email: 1 }, { unique: true });
 
 // The scoping plugin would normally add societyId, but we've defined it
 // explicitly above since User has special handling (null for superadmin).

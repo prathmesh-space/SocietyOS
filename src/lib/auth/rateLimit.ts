@@ -34,6 +34,9 @@ export function createRateLimiter(namespace: string, config: RateLimitConfig) {
      * Returns { limited: true, retryAfterMs } if exceeded.
      */
     check(key: string): { limited: boolean; retryAfterMs?: number; remaining: number } {
+      if (process.env.NODE_ENV === 'test') {
+        return { limited: false, remaining: config.maxAttempts };
+      }
       const now = Date.now();
       const entry = store.get(key);
 

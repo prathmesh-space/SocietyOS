@@ -52,7 +52,9 @@ export const GET = withAuth(
   { roles: ['superadmin'] }
 );
 
-// POST /api/superadmin/societies — Create a new society + first admin user
+// POST /api/superadmin/societies — Create a new society + first admin user (with activation token)
+import crypto from 'crypto';
+
 export const POST = withAuth(
   async (req, { auth }) => {
     try {
@@ -68,7 +70,6 @@ export const POST = withAuth(
       const {
         adminEmail,
         adminName,
-        adminPassword,
         lateFeeRule,
         ...societyData
       } = validation.data;
@@ -81,8 +82,16 @@ export const POST = withAuth(
         lateFeeRule: lateFeeRule || { type: 'percentage', value: 2, gracePeriodDays: 7 },
       });
 
-      // Create first admin user for this society
-      const passwordHash = await hashPassword(adminPassword);
+      // Generate activation token
+      const rawToken = crypto.randomBytes(32).toString('hex');
+      const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+      const tokenExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days expiry
+
+      // Set a temporary random password hash since it is a required field
+      const tempPassword = crypto.randomBytes(32).toString('hex');
+      const passwordHash = await hashPassword(tempPassword);
+
+      // Create first admin user for this society (status: pending, awaiting activation)
       const adminUser = await User.create({
         email: adminEmail,
         passwordHash,
@@ -90,10 +99,12 @@ export const POST = withAuth(
         societyId: society._id,
         name: adminName,
         phone: '',
-        status: 'active', // Admin is immediately active
+        status: 'pending', // Awaiting activation
+        activationToken: hashedToken,
+        activationTokenExpires: tokenExpiry,
       });
 
-      // Log the creation
+      // Log the creation (AuditLog stub)
       await logAuditEvent({
         action: 'society.create',
         entityType: 'Society',
@@ -111,7 +122,10 @@ export const POST = withAuth(
             email: adminUser.email,
             name: adminUser.name,
             role: adminUser.role,
+            status: adminUser.status,
           },
+          activationToken: rawToken,
+          activationLink: `/activate?token=${rawToken}`,
         },
         { status: 201 }
       );

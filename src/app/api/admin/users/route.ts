@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connection';
 import User from '@/models/User';
+import Unit from '@/models/Unit';
 import { withAuth } from '@/lib/auth/middleware';
 
 // GET /api/admin/users — List users in admin's society

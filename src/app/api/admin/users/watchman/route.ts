@@ -23,11 +23,11 @@ export const POST = withAuth(
 
       await dbConnect();
 
-      // Check for existing user with same email in this society
-      const existing = await User.findOne({ email });
+      // Check for existing user with same email globally
+      const existing = await User.findOne({ email }).setOptions({ unscoped: true });
       if (existing) {
         return NextResponse.json(
-          { error: 'A user with this email already exists in your society' },
+          { error: 'A user with this email already exists' },
           { status: 409 }
         );
       }

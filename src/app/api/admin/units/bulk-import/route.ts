@@ -33,6 +33,7 @@ export const POST = withAuth(
         created: [] as string[],
         failed: [] as { unitNumber: string; error: string }[],
       };
+      let createdIds: any[] = [];
 
       try {
         const created = await Unit.insertMany(unitsToCreate, {
@@ -40,10 +41,11 @@ export const POST = withAuth(
           rawResult: false,
         });
         results.created = created.map((u) => u.unitNumber);
+        createdIds = created.map((u) => u._id);
       } catch (error) {
         // insertMany with ordered:false throws but still inserts valid docs
         const bulkError = error as {
-          insertedDocs?: Array<{ unitNumber: string }>;
+          insertedDocs?: Array<{ _id: any; unitNumber: string }>;
           writeErrors?: Array<{
             err?: { errmsg?: string };
             index: number;
@@ -52,6 +54,7 @@ export const POST = withAuth(
 
         if (bulkError.insertedDocs) {
           results.created = bulkError.insertedDocs.map((d) => d.unitNumber);
+          createdIds = bulkError.insertedDocs.map((d) => d._id);
         }
 
         if (bulkError.writeErrors) {
@@ -67,15 +70,15 @@ export const POST = withAuth(
         }
       }
 
-      // Audit log the bulk operation
-      if (results.created.length > 0) {
+      // Audit log the bulk operation using the actual document IDs
+      if (createdIds.length > 0) {
         await logBulkAuditEvent({
           action: 'unit.bulk_import',
           entityType: 'Unit',
-          affectedIds: results.created,
+          affectedIds: createdIds,
           metadata: {
             totalAttempted: unitData.length,
-            totalCreated: results.created.length,
+            totalCreated: createdIds.length,
             totalFailed: results.failed.length,
           },
         });
