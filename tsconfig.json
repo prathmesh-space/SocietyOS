@@ -26,7 +26,7 @@
     "noUnusedParameters": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", ".next", "out"],
+  "exclude": ["node_modules", ".next", "out", "scratch", "scripts"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
