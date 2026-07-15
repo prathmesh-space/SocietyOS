@@ -94,7 +94,7 @@
 - [x] Register user audit actions (`user.create`, `user.approve`)
 
 ## 13. Seed Script
-- [ ] scripts/seed.ts
+- [x] scripts/seed.ts
 
 ## 14. Tests
 - [x] Jest config
@@ -111,8 +111,8 @@
 - [x] Integration: Notices, Emergency Contacts, and Audit Logs tests (`tests/integration/noticesAndAuditLogs.test.ts`)
 
 ## 15. CI/CD
-- [ ] .github/workflows/ci.yml
-- [ ] .github/workflows/deploy.yml
+- [x] .github/workflows/ci.yml (unified CI + deploy job)
+- [x] vercel.json (Vercel Cron wiring for late-fee job)
 
 ## 16. Frontend
 - [x] Root layout + global styles
