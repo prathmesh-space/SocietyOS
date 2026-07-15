@@ -1,4 +1,4 @@
-# SocietyOS Phase 1+2+3+4+5 — Task Tracker
+# SocietyOS Phase 1+2+3+4+5+6 — Task Tracker
 
 ## 1. Project Scaffolding
 - [x] Initialize Next.js 14 with App Router, TypeScript, TailwindCSS, ESLint
@@ -22,6 +22,7 @@
 - [x] Receipt model
 - [x] Complaint model
 - [x] Visitor model
+- [x] Notice model
 
 ## 4. Authentication System
 - [x] JWT utilities (`src/lib/auth/jwt.ts`)
@@ -37,6 +38,7 @@
 - [x] Bill/Payment schemas
 - [x] Complaint schemas
 - [x] Visitor schemas
+- [x] Notice schemas
 
 ## 6. API Routes — Auth
 - [x] POST /api/auth/signup
@@ -47,7 +49,7 @@
 
 ## 7. API Routes — Super Admin
 - [x] GET/POST /api/superadmin/societies (Onboarding with Activation Link)
-- [x] GET/PATCH/DELETE /api/superadmin/societies/[id]
+- [x] GET/PATCH/DELETE /api/superadmin/societies/[id] (with Emergency Contacts activation constraint)
 
 ## 8. API Routes — Admin
 - [x] GET/POST /api/admin/units
@@ -61,6 +63,9 @@
 - [x] GET /api/admin/complaints (filterable by status)
 - [x] PATCH /api/admin/complaints/[id]/assign (Assign to other Admins)
 - [x] PATCH /api/admin/complaints/[id]/status (Linear status pipeline updates)
+- [x] GET/POST /api/admin/notices (List history / create notices)
+- [x] PATCH/DELETE /api/admin/notices/[id] (Edit and record lastEditedAt / delete notices)
+- [x] GET /api/admin/audit-log (Filterable read-only logs)
 
 ## 9. API Routes — Resident
 - [x] POST /api/resident/payments/create-order (Razorpay order creation)
@@ -69,6 +74,7 @@
 - [x] GET /api/resident/complaints/[id] (View own complaint details)
 - [x] POST /api/resident/complaints/[id]/reopen (Reopen closed complaint into a new document)
 - [x] POST /api/resident/visitors/pre-approve (Generate signed pre-approval QR tokens)
+- [x] GET /api/resident/notices (List active non-expired notices only)
 
 ## 10. API Routes — Watchman Portal
 - [x] POST /api/watchman/visitors/scan (Scan signed pre-approval QR tokens with clock-skew tolerance)
@@ -78,12 +84,14 @@
 
 ## 11. Webhooks & Background Jobs
 - [x] POST /api/webhooks/razorpay (Idempotent captured/failed handler)
-- [x] POST /api/jobs/late-fees (Daily late fee rule processor)
+- [x] POST /api/jobs/late-fees (Hardened CRON_SECRET authorized daily late fee rule processor)
 
 ## 12. Audit Log Infrastructure
 - [x] Audit logger utility with support for system/webhook actors
 - [x] Register new complaint audit actions (`complaint.create`, `complaint.assign`, `complaint.update`, `complaint.resolve`, `complaint.close`)
 - [x] Register new visitor audit actions (`visitor.pre_approve`, `visitor.manual_entry`)
+- [x] Register new notice audit actions (`notice.create`, `notice.update`, `notice.delete`)
+- [x] Register user audit actions (`user.create`, `user.approve`)
 
 ## 13. Seed Script
 - [ ] scripts/seed.ts
@@ -100,6 +108,7 @@
 - [x] Integration: Resident Payments, Webhooks, and Receipts tests (`tests/integration/residentPayments.test.ts`)
 - [x] Integration: Complaints Management & Pipeline tests (`tests/integration/complaints.test.ts`)
 - [x] Integration: Visitor Pre-approval, Scan, and Watchman Portal tests (`tests/integration/visitors.test.ts`)
+- [x] Integration: Notices, Emergency Contacts, and Audit Logs tests (`tests/integration/noticesAndAuditLogs.test.ts`)
 
 ## 15. CI/CD
 - [ ] .github/workflows/ci.yml

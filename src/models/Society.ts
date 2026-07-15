@@ -112,7 +112,7 @@ const societySchema = new Schema<ISociety>(
     },
     active: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     lateFeeRule: {
       type: lateFeeRuleSchema,
