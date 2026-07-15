@@ -15,9 +15,10 @@ export default function HomePage() {
       if (user) {
         try {
           const parsed = JSON.parse(user);
-          if (parsed.role === 'superadmin') router.push('/super-admin/dashboard');
+          if (parsed.role === 'superadmin') router.push('/superadmin/dashboard');
           else if (parsed.role === 'admin') router.push('/admin/dashboard');
-          else router.push('/login');
+          else if (parsed.role === 'watchman') router.push('/watchman/dashboard');
+          else router.push('/resident/dashboard');
         } catch {
           // ignore
         }

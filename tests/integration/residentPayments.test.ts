@@ -10,6 +10,7 @@ config({ path: resolve(__dirname, '../../.env.local') });
 import { POST as createOrderHandler } from '@/app/api/resident/payments/create-order/route';
 import { POST as webhookHandler } from '@/app/api/webhooks/razorpay/route';
 import { GET as getReceiptHandler } from '@/app/api/resident/receipts/[id]/route';
+import { GET as getBillsHandler } from '@/app/api/resident/bills/route';
 import Society from '@/models/Society';
 import Unit from '@/models/Unit';
 import User from '@/models/User';
@@ -546,5 +547,55 @@ describe('Razorpay Order Creation, Webhooks, Receipts, and Security', () => {
 
     const res2 = await getReceiptHandler(req2, { params: { id: receipt._id.toString() } } as any);
     expect(res2.status).toBe(403);
+  });
+
+  test('GET /api/resident/bills: Happy path & Resident ownership (only own unit bills returned)', async () => {
+    const req = new NextRequest('http://localhost/api/resident/bills', {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${residentA1Token}`,
+      },
+    });
+
+    const res = await getBillsHandler(req, {} as any);
+    expect(res.status).toBe(200);
+
+    const body = await res.json();
+    expect(body.bills).toBeDefined();
+    expect(body.bills.length).toBeGreaterThan(0);
+    // Should contain billA1 but not billA2 (different unit) or billB1 (different society)
+    expect(body.bills.some((b: any) => b._id === billA1._id.toString())).toBe(true);
+    expect(body.bills.some((b: any) => b._id === billA2._id.toString())).toBe(false);
+    expect(body.bills.some((b: any) => b._id === billB1._id.toString())).toBe(false);
+  });
+
+  test('GET /api/resident/bills: Tenant scoping & ownership for Resident B1', async () => {
+    const req = new NextRequest('http://localhost/api/resident/bills', {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${residentB1Token}`,
+      },
+    });
+
+    const res = await getBillsHandler(req, {} as any);
+    expect(res.status).toBe(200);
+
+    const body = await res.json();
+    expect(body.bills).toBeDefined();
+    // Resident B1 should only see billB1
+    expect(body.bills.some((b: any) => b._id === billB1._id.toString())).toBe(true);
+    expect(body.bills.some((b: any) => b._id === billA1._id.toString())).toBe(false);
+  });
+
+  test('GET /api/resident/bills: Wrong-role auth failure (Admin cannot use resident route)', async () => {
+    const req = new NextRequest('http://localhost/api/resident/bills', {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${adminAToken}`,
+      },
+    });
+
+    const res = await getBillsHandler(req, {} as any);
+    expect(res.status).toBe(403); // Forbidden
   });
 });

@@ -1,0 +1,235 @@
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ override existing { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ override existing { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ override existing { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    ◇ injected env (12) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+(node:193332) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS tests/integration/adminSettings.test.ts (11.891 s)
+  Admin Settings API
+    √ Happy Path: Admin A can get and update society settings (242 ms)
+    √ Authorization Failure: Resident cannot view or modify settings (13 ms)
+    √ Tenant Scoping: Admin A modifications do not affect Society B settings (19 ms)
+
+(node:192880) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:178580) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS tests/integration/adminUnits.test.ts (14.897 s)
+  Admin Units Management API
+    √ Happy Path: Admin A can add an individual unit (117 ms)
+    √ Enforce Uniqueness: Adding duplicate unitNumber within same society returns conflict 409 (31 ms)
+    √ Happy Path: Admin A can bulk-import units (837 ms)
+    √ Authorization Failure: Resident cannot add units or bulk import (16 ms)
+    √ Tenant Scoping: Admin A cannot see or modify Society B units (114 ms)
+
+(node:192880) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+(node:178580) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+(node:178580) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+PASS tests/integration/superadminOnboarding.test.ts (15.86 s)
+  Super Admin Onboarding & Activation Flow
+    √ Happy Path: Super Admin can onboard a society and its first admin (1968 ms)
+    √ Authorization Failure: Admin / Resident cannot onboard a society (13 ms)
+    √ Happy Path: Onboarded admin can activate their account (1894 ms)
+    √ Activation Failure: Invalid / Expired token returns 400 (19 ms)
+
+PASS tests/integration/adminWatchman.test.ts (15.874 s)
+  Admin Watchman Account Creation API
+    √ Happy Path: Admin A can create a Watchman account (2811 ms)
+    √ Authorization Failure: Resident cannot create a Watchman account (4 ms)
+    √ Tenant Scoping: Admin B cannot list or view Watchman created in Society A (30 ms)
+
+PASS tests/tenant-isolation/crossTenant.test.ts (15.977 s)
+  Tenant Isolation — Unit Collection
+    √ Society A admin can only see Society A units (33 ms)
+    √ Society B admin can only see Society B units (16 ms)
+    √ Society A admin cannot find Society B unit by ID (17 ms)
+    √ Society A admin cannot find Society B unit by query (14 ms)
+    √ Society A admin countDocuments only counts Society A units (18 ms)
+    √ Society A admin cannot update Society B unit (48 ms)
+    √ Society A admin cannot delete Society B unit (781 ms)
+    √ updateMany in Society A scope cannot affect Society B (143 ms)
+  Tenant Isolation — User Collection
+    √ Society A admin sees only Society A users (17 ms)
+    √ Society A admin cannot find Society B user by ID (13 ms)
+    √ Society A admin cannot find Society B user by email (805 ms)
+    √ Society A admin countDocuments only counts Society A users (9 ms)
+  Tenant Isolation — No Context Safety
+    √ Query without tenant context throws on tenant-scoped collection (15 ms)
+    √ Query without tenant context on User collection throws (11 ms)
+    √ Unscoped query explicitly bypasses tenant context (17 ms)
+    √ Explicit verification: A query executed with NO tenant context throws an error, preventing silent unscoped database leaks (3 ms)
+    √ Creating a document with NO tenant context throws an error during save (65 ms)
+  Tenant Isolation — Super Admin Behavior
+    √ Super Admin with no societyId sees all units (16 ms)
+    √ Super Admin with specific societyId sees only that society's units (30 ms)
+  Tenant Isolation — Cross-Tenant Write Prevention
+    √ Cannot create a unit in Society B while in Society A context (835 ms)
+    √ findOneAndUpdate with Society B ID in Society A context returns null (21 ms)
+    √ deleteMany in Society A context cannot affect Society B (52 ms)
+  Tenant Isolation — AuditLog Immutability
+    √ AuditLog entries cannot be updated (28 ms)
+    √ AuditLog entries cannot be deleted via Mongoose (3 ms)
+
+  console.warn
+    [Webhook:Razorpay] Invalid webhook signature
+
+    [0m [90m 30 |[39m
+     [90m 31 |[39m     [36mif[39m (expectedSignature [33m!==[39m signature) {
+    [31m[1m>[22m[39m[90m 32 |[39m       console[33m.[39mwarn([32m'[Webhook:Razorpay] Invalid webhook signature'[39m)[33m;[39m
+     [90m    |[39m               [31m[1m^[22m[39m
+     [90m 33 |[39m       [36mreturn[39m [33mNextResponse[39m[33m.[39mjson({ error[33m:[39m [32m'Invalid signature'[39m }[33m,[39m { status[33m:[39m [35m400[39m })[33m;[39m
+     [90m 34 |[39m     }
+     [90m 35 |[39m[0m
+
+      at src/app/api/webhooks/razorpay/route.ts:32:15
+      at fulfilled (src/app/api/webhooks/razorpay/route.ts:5:58)
+
+  console.error
+    [Webhook:Razorpay] RAZORPAY_WEBHOOK_SECRET is not configured
+
+    [0m [90m 17 |[39m     [36mconst[39m webhookSecret [33m=[39m process[33m.[39menv[33m.[39m[33mRAZORPAY_WEBHOOK_SECRET[39m[33m;[39m
+     [90m 18 |[39m     [36mif[39m ([33m![39mwebhookSecret) {
+    [31m[1m>[22m[39m[90m 19 |[39m       console[33m.[39merror([32m'[Webhook:Razorpay] RAZORPAY_WEBHOOK_SECRET is not configured'[39m)[33m;[39m
+     [90m    |[39m               [31m[1m^[22m[39m
+     [90m 20 |[39m       [36mreturn[39m [33mNextResponse[39m[33m.[39mjson({ error[33m:[39m [32m'Webhook configuration error'[39m }[33m,[39m { status[33m:[39m [35m500[39m })[33m;[39m
+     [90m 21 |[39m     }
+     [90m 22 |[39m[0m
+
+      at src/app/api/webhooks/razorpay/route.ts:19:15
+      at src/app/api/webhooks/razorpay/route.ts:8:71
+      at __awaiter (src/app/api/webhooks/razorpay/route.ts:4:12)
+      at POST (src/app/api/webhooks/razorpay/route.ts:24:12)
+      at tests/integration/residentPayments.test.ts:359:37
+      at tests/integration/residentPayments.test.ts:8:71
+      at __awaiter (tests/integration/residentPayments.test.ts:4:12)
+      at Object.<anonymous> (tests/integration/residentPayments.test.ts:338:108)
+
+PASS tests/integration/noticesAndAuditLogs.test.ts (16.893 s)
+  Notices, Emergency Contacts, and Audit Logs API
+    √ Happy Path: Admin A1 can post a new notice with expiry (888 ms)
+    √ Resident Notices view: Lists active notices but EXCLUDES expired ones (973 ms)
+    √ Admin Notices view: Admin gets all notices including expired history (31 ms)
+    √ Happy Path: Admin A1 can edit a notice, setting lastEditedAt (120 ms)
+    √ Tenant Scoping: Admin B1 cannot view or modify Society A notices (37 ms)
+    √ Audit Log Read-Only Protection: PATCH/DELETE methods return 405 Method Not Allowed (815 ms)
+    √ Emergency Contacts Activation: Cannot activate society with 0 emergency contacts (152 ms)
+
+PASS tests/integration/adminBilling.test.ts (17.925 s)
+  Maintenance Billing Management API & Late Fees Job
+    √ Happy Path: Admin A can bulk generate bills for a period (939 ms)
+    √ Duplicate Bill Generation Check: Re-generating bills for same period returns 409 Conflict (21 ms)
+    √ Billing Override: Admin can generate bills with overrides (924 ms)
+    √ Authorization Failure: Resident cannot generate bills (3 ms)
+    √ Late Fees Scheduled Job: Applies late fee past grace period exactly once (2086 ms)
+    √ Vercel Cron Path: GET /api/jobs/late-fees applies late fees identically to POST (269 ms)
+
+PASS tests/integration/complaints.test.ts (18.114 s)
+  Complaints Management & Status Pipeline API
+    √ Happy Path: Resident A1 can file a complaint (852 ms)
+    √ Happy Path: Resident A1 can list and view own complaint (74 ms)
+    √ Ownership Security: Resident A2 cannot view Resident A1's complaint (22 ms)
+    √ Scoping Security: Resident B1 cannot view Resident A1's complaint (18 ms)
+    √ Admin endpoints: Admin A1 can list complaints in their society filterable by status (826 ms)
+    √ Admin endpoints: Admin A1 can assign complaint to Admin A2 (122 ms)
+    √ Status Pipeline: Skipping pipeline from Open -> Closed must be rejected (46 ms)
+    √ Status Pipeline: Open -> In Progress is permitted (85 ms)
+    √ Status Pipeline: Moving to Resolved without resolutionNote must be rejected (41 ms)
+    √ Status Pipeline: Moving to Resolved with resolutionNote is permitted (88 ms)
+    √ Status Pipeline: Resolved -> Closed is permitted (665 ms)
+    √ Reopening: Reopening Closed complaint creates NEW record, original Closed is untouched (96 ms)
+
+PASS tests/integration/visitors.test.ts (18.114 s)
+  Visitors, QR Pre-approvals, and Watchman Portal API
+    √ Happy Path: Resident A1 can generate a pre-approval token (4 hour window) (136 ms)
+    √ Max Window Enforcement: Pre-approval request longer than society max (12 hours) is rejected (22 ms)
+    √ Happy Path: Watchman A1 can scan and check in a pre-approved visitor (885 ms)
+    √ Idempotency/Single-use: Scanning same token again returns already-used error (45 ms)
+    √ Clock Skew Tolerance: Token scanned slightly before start time is accepted (875 ms)
+    √ Expiry test: Scanning an expired token is rejected with expired code (69 ms)
+    √ Scoping & Forgery: Watchman B1 cannot scan Society A token; forged token is rejected (20 ms)
+    √ Manual entry: Watchman A1 can log an unscheduled visitor (75 ms)
+    √ Live inside view: Watchman and Admin can view currently inside visitors (78 ms)
+    √ Offline Batch Sync: Processes independent results, uses capture time (763 ms)
+    √ Race Condition / Concurrent Scans: Enforces database-layer unique token constraint when scanned simultaneously (133 ms)
+
+PASS tests/integration/residentPayments.test.ts (18.271 s)
+  Razorpay Order Creation, Webhooks, Receipts, and Security
+    √ Happy Path: Resident A1 can create an order for their own bill (118 ms)
+    √ Authorization Failure: Resident A2 cannot create an order for Resident A1's bill (777 ms)
+    √ Scoping Security: Resident B1 cannot create an order for Resident A1's bill (20 ms)
+    √ Reject if already paid: Cannot create order for a Paid bill (56 ms)
+    √ Webhook Signature Verification: Rejected with 400 if signature is tampered/invalid (42 ms)
+    √ Webhook Signature Verification: Rejected with 500 if webhook secret is not configured (21 ms)
+    √ Webhook processing: payment.captured event updates status & creates receipt (237 ms)
+    √ Webhook Idempotency: Re-sending payment.captured is a no-op (does not re-process) (619 ms)
+    √ Webhook failed: payment.failed event updates payment status, bill remains Unpaid (131 ms)
+    √ Receipt Download: Resident can access own unit receipt, but not another unit's (93 ms)
+    √ GET /api/resident/bills: Happy path & Resident ownership (only own unit bills returned) (86 ms)
+    √ GET /api/resident/bills: Tenant scoping & ownership for Resident B1 (39 ms)
+    √ GET /api/resident/bills: Wrong-role auth failure (Admin cannot use resident route) (6 ms)
+
+PASS tests/integration/residentSignup.test.ts (20.045 s)
+  Resident Signup & Approval Flow
+    √ Happy Path: Resident can sign up and Admin can approve (1881 ms)
+    √ Duplicate Claim: Second resident signs up claiming same Unit -> contestedUnit set to true on both (2104 ms)
+    √ Authorization Failure: Non-admin cannot approve a resident (1136 ms)
+    √ Tenant Scoping: Admin A cannot approve or list users from Society B (990 ms)
+    √ Global Email Uniqueness: Users in two different societies cannot register with the same email (939 ms)
+
+Test Suites: 11 passed, 11 total
+Tests:       93 passed, 93 total
+Snapshots:   0 total
+Time:        22.526 s
+Ran all test suites.
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

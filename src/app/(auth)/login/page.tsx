@@ -23,13 +23,13 @@ export default function LoginPage() {
       if (result.success) {
         const user = JSON.parse(localStorage.getItem('societyos_user') || '{}');
         if (user.role === 'superadmin') {
-          router.push('/super-admin/dashboard');
+          window.location.href = '/superadmin/dashboard';
         } else if (user.role === 'admin') {
-          router.push('/admin/dashboard');
+          window.location.href = '/admin/dashboard';
         } else if (user.role === 'watchman') {
-          router.push('/watchman/dashboard');
+          window.location.href = '/watchman/dashboard';
         } else {
-          router.push('/resident/dashboard');
+          window.location.href = '/resident/dashboard';
         }
       } else {
         setError(result.error || 'Login failed');

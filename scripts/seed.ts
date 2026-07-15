@@ -50,7 +50,12 @@ async function seed() {
     await Complaint.deleteMany({ societyId: { $in: existingIds } }).setOptions({ unscoped: true });
     await Payment.deleteMany({ societyId: { $in: existingIds } }).setOptions({ unscoped: true });
     await MaintenanceBill.deleteMany({ societyId: { $in: existingIds } }).setOptions({ unscoped: true });
-    await User.deleteMany({ societyId: { $in: existingIds } }).setOptions({ unscoped: true });
+    await User.deleteMany({
+      $or: [
+        { societyId: { $in: existingIds } },
+        { role: 'superadmin' }
+      ]
+    }).setOptions({ unscoped: true });
     await Unit.deleteMany({ societyId: { $in: existingIds } }).setOptions({ unscoped: true });
     await mongoose.connection.collection('auditlogs').deleteMany({ societyId: { $in: existingIds } });
     await Society.deleteMany({ _id: { $in: existingIds } });
@@ -59,7 +64,7 @@ async function seed() {
   console.log('Creating demo societies...');
 
   // Society 1: Fully configured, active, 2 emergency contacts
-  const passwordHash = await bcrypt.hash('DemoPassword@123', 10);
+  const passwordHash = await bcrypt.hash('Admin@123!', 10);
 
   const soc1 = await Society.create({
     name: 'Demo Lotus CHS',
@@ -114,9 +119,18 @@ async function seed() {
     { unitNumber: 'Flat 202', floor: 2, societyId: soc1._id },
   ]);
 
+  // Create Super Admin User
+  await User.create({
+    email: 'superadmin@societyos.in',
+    passwordHash,
+    role: 'superadmin',
+    name: 'Super Admin',
+    status: 'active',
+  });
+
   // Create Users for Lotus CHS
   const adminSoc1 = await User.create({
-    email: 'admin-lotus@demo.societyos.in',
+    email: 'admin@greenvalley.com',
     passwordHash,
     role: 'admin',
     societyId: soc1._id,

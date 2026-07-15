@@ -113,6 +113,18 @@ const societySchema = new Schema<ISociety>(
     active: {
       type: Boolean,
       default: false,
+      validate: {
+        validator: function (this: any, v: boolean) {
+          // 'this' refers to the document being validated.
+          // In updates (like findOneAndUpdate), 'this' might be undefined or refer to the query, 
+          // but mongoose handles this differently. Assuming document methods are used (e.g. save()).
+          if (v === true) {
+            return this.emergencyContacts && this.emergencyContacts.length > 0;
+          }
+          return true;
+        },
+        message: 'Society cannot be activated without at least one emergency contact.',
+      },
     },
     lateFeeRule: {
       type: lateFeeRuleSchema,

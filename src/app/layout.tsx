@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { AuthProvider } from '@/components/auth/AuthProvider';
 
 export const metadata: Metadata = {
   title: 'SocietyOS — Smart Housing Society Management',
@@ -31,7 +32,9 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className="min-h-screen custom-scrollbar">{children}</body>
+      <body className="min-h-screen custom-scrollbar">
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }
