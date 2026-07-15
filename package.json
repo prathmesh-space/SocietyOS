@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest --ci",
     "test:watch": "jest --watch",
-    "seed": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/seed.ts"
+    "seed": "ts-node scripts/seed.ts"
   },
   "dependencies": {
     "@types/node": "^26.1.1",
