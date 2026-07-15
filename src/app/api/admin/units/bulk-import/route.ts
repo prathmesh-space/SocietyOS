@@ -25,7 +25,7 @@ export const POST = withAuth(
       // Add societyId to each unit
       const unitsToCreate = unitData.map((u) => ({
         ...u,
-        societyId: auth.societyId,
+        societyId: auth.societyId!,
       }));
 
       // Use insertMany with ordered: false to continue on individual failures

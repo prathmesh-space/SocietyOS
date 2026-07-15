@@ -7,6 +7,7 @@ export interface AccessTokenPayload {
   userId: string;
   role: UserRole;
   societyId: string | null;
+  unitId?: string | null;
   type: 'access';
 }
 
@@ -37,7 +38,7 @@ export function signAccessToken(payload: Omit<AccessTokenPayload, 'type'>): stri
   return jwt.sign(
     { ...payload, type: 'access' },
     JWT_SECRET(),
-    { expiresIn: ACCESS_EXPIRY }
+    { expiresIn: ACCESS_EXPIRY as any }
   );
 }
 
@@ -55,7 +56,7 @@ export function signRefreshToken(payload: Omit<RefreshTokenPayload, 'type'>): st
   return jwt.sign(
     { ...payload, type: 'refresh' },
     JWT_REFRESH_SECRET(),
-    { expiresIn: REFRESH_EXPIRY }
+    { expiresIn: REFRESH_EXPIRY as any }
   );
 }
 

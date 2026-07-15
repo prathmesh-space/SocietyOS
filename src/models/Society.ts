@@ -46,7 +46,7 @@ const lateFeeRuleSchema = new Schema<ILateFeeRule>(
       default: 0,
       min: 0,
       validate: {
-        validator: function (this: ILateFeeRule, v: number) {
+        validator: function (this: any, v: number) {
           return this.type === 'percentage' ? v <= 100 : true;
         },
         message: 'Percentage late fee must be between 0 and 100',
@@ -137,7 +137,7 @@ const societySchema = new Schema<ISociety>(
   {
     timestamps: true,
     toJSON: {
-      transform(_doc, ret) {
+      transform(_doc, ret: any) {
         ret.id = ret._id;
         delete ret.__v;
         return ret;

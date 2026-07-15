@@ -66,7 +66,7 @@ export const POST = withAuth(
           : defaultAmount;
 
         return {
-          societyId: auth.societyId,
+          societyId: auth.societyId!,
           unitId: unit._id,
           billingPeriod,
           amount,
@@ -84,7 +84,7 @@ export const POST = withAuth(
       await logAuditEvent({
         action: 'bill.generate',
         entityType: 'MaintenanceBill',
-        entityId: createdBills[0]?._id, // Reference primary record in the batch
+        entityId: createdBills[0]!._id, // Reference primary record in the batch
         afterState: {
           billingPeriod,
           totalBillsGenerated: createdBills.length,

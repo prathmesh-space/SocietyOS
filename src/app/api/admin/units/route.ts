@@ -60,7 +60,7 @@ export const POST = withAuth(
 
       const unit = await Unit.create({
         ...validation.data,
-        societyId: auth.societyId,
+        societyId: auth.societyId!,
       });
 
       await logAuditEvent({

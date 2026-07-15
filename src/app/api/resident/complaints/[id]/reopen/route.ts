@@ -34,7 +34,7 @@ export const POST = withAuth(
 
       // Create a NEW complaint linking to the original Closed complaint
       const newComplaint = await Complaint.create({
-        societyId: auth.societyId,
+        societyId: auth.societyId!,
         unitId: originalComplaint.unitId,
         residentId: auth.userId,
         category: originalComplaint.category,

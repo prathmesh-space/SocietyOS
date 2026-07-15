@@ -35,7 +35,7 @@ export const POST = withAuth(
 
       // Create unverified visitor check-in
       const visitor = await Visitor.create({
-        societyId: auth.societyId,
+        societyId: auth.societyId!,
         unitId: unit._id,
         visitorName,
         entryTime: entryTime || new Date(),

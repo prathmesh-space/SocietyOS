@@ -119,7 +119,7 @@ const userSchema = new Schema<IUser>(
   {
     timestamps: true,
     toJSON: {
-      transform(_doc, ret) {
+      transform(_doc, ret: any) {
         ret.id = ret._id;
         delete ret.__v;
         delete ret.passwordHash;
@@ -155,7 +155,7 @@ import { getTenantContext } from '@/lib/tenant/context';
 
 for (const hookName of queryHooks) {
   userSchema.pre(hookName, function () {
-    const opts = (this.getOptions?.() ?? this.options ?? {}) as { unscoped?: boolean };
+    const opts = ((this as any).getOptions?.() ?? (this as any).options ?? {}) as { unscoped?: boolean };
 
     if (opts?.unscoped) {
       return;

@@ -72,7 +72,7 @@ export const POST = withAuth(
 
       // Create a pending Payment record in our database
       const payment = await Payment.create({
-        societyId: auth.societyId,
+        societyId: auth.societyId!,
         billId: bill._id,
         amount: bill.amount,
         paymentMethod: 'razorpay',

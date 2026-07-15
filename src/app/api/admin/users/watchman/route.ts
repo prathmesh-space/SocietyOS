@@ -38,7 +38,7 @@ export const POST = withAuth(
         email,
         passwordHash,
         role: 'watchman',
-        societyId: auth.societyId,
+        societyId: auth.societyId!,
         name,
         phone: phone || '',
         status: 'active', // Watchman is immediately active

@@ -83,7 +83,7 @@ export const POST = withAuth(
       let visitor;
       try {
         visitor = await Visitor.create({
-          societyId: auth.societyId,
+          societyId: auth.societyId!,
           unitId: new mongoose.Types.ObjectId(unitId),
           visitorName,
           entryTime: new Date(),

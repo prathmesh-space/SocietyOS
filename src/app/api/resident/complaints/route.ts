@@ -57,8 +57,8 @@ export const POST = withAuth(
 
       // Create complaint record
       const complaint = await Complaint.create({
-        societyId: auth.societyId,
-        unitId: auth.unitId,
+        societyId: auth.societyId!,
+        unitId: auth.unitId!,
         residentId: auth.userId,
         category,
         description,

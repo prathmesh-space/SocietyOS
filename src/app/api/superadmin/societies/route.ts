@@ -109,7 +109,7 @@ export const POST = withAuth(
         action: 'society.create',
         entityType: 'Society',
         entityId: society._id,
-        afterState: society.toJSON(),
+        afterState: society.toJSON() as any,
         actorId: auth.userId,
         societyId: society._id.toString(),
       });

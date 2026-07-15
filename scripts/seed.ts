@@ -139,12 +139,12 @@ async function seed() {
     passwordHash,
     role: 'resident',
     societyId: soc1._id,
-    unitId: unitsSoc1[0]._id,
+    unitId: unitsSoc1[0]!._id,
     name: 'Amit Sharma',
     status: 'active',
   });
-  unitsSoc1[0].primaryResidentId = res1._id;
-  await unitsSoc1[0].save();
+  unitsSoc1[0]!.primaryResidentId = res1._id;
+  await unitsSoc1[0]!.save();
 
   // Resident 2: Pending admin approval
   const res2 = await User.create({
@@ -152,7 +152,7 @@ async function seed() {
     passwordHash,
     role: 'resident',
     societyId: soc1._id,
-    unitId: unitsSoc1[1]._id,
+    unitId: unitsSoc1[1]!._id,
     name: 'Pooja Patel',
     status: 'pending',
   });
@@ -163,12 +163,12 @@ async function seed() {
     passwordHash,
     role: 'resident',
     societyId: soc1._id,
-    unitId: unitsSoc1[2]._id,
+    unitId: unitsSoc1[2]!._id,
     name: 'Vikram Singh',
     status: 'active',
   });
-  unitsSoc1[2].primaryResidentId = res3._id;
-  await unitsSoc1[2].save();
+  unitsSoc1[2]!.primaryResidentId = res3._id;
+  await unitsSoc1[2]!.save();
 
   console.log('Users and units created for Society 1.');
 
@@ -176,7 +176,7 @@ async function seed() {
   // Bill 1: Paid in June
   const billPaid = await MaintenanceBill.create({
     societyId: soc1._id,
-    unitId: unitsSoc1[0]._id,
+    unitId: unitsSoc1[0]!._id,
     billingPeriod: '2026-06',
     amount: 3000,
     dueDate: new Date('2026-06-25'),
@@ -187,18 +187,16 @@ async function seed() {
   await Payment.create({
     societyId: soc1._id,
     billId: billPaid._id,
-    unitId: unitsSoc1[0]._id,
     amount: 3000,
     status: 'captured',
     razorpayOrderId: 'order_demo666',
     razorpayPaymentId: 'pay_demo666_captured',
-    verifiedAt: new Date('2026-06-20'),
   });
 
   // Bill 2: Unpaid in July
   await MaintenanceBill.create({
     societyId: soc1._id,
-    unitId: unitsSoc1[0]._id,
+    unitId: unitsSoc1[0]!._id,
     billingPeriod: '2026-07',
     amount: 3000,
     dueDate: new Date('2026-07-25'),
@@ -209,7 +207,7 @@ async function seed() {
   // Bill 3: Overdue from May (with late fee applied)
   await MaintenanceBill.create({
     societyId: soc1._id,
-    unitId: unitsSoc1[0]._id,
+    unitId: unitsSoc1[0]!._id,
     billingPeriod: '2026-05',
     amount: 3060, // 3000 + 60 late fee
     dueDate: new Date('2026-05-25'),
@@ -224,7 +222,7 @@ async function seed() {
   await Complaint.create([
     {
       societyId: soc1._id,
-      unitId: unitsSoc1[0]._id,
+      unitId: unitsSoc1[0]!._id,
       residentId: res1._id,
       category: 'Plumbing',
       description: 'Major leakage in the kitchen sink drainage pipe.',
@@ -232,7 +230,7 @@ async function seed() {
     },
     {
       societyId: soc1._id,
-      unitId: unitsSoc1[2]._id,
+      unitId: unitsSoc1[2]!._id,
       residentId: res3._id,
       assignedAdminId: adminSoc1._id,
       category: 'Electrical',
@@ -241,7 +239,7 @@ async function seed() {
     },
     {
       societyId: soc1._id,
-      unitId: unitsSoc1[0]._id,
+      unitId: unitsSoc1[0]!._id,
       residentId: res1._id,
       assignedAdminId: adminSoc1._id,
       category: 'Security',
@@ -278,7 +276,7 @@ async function seed() {
   await Visitor.create([
     {
       societyId: soc1._id,
-      unitId: unitsSoc1[0]._id,
+      unitId: unitsSoc1[0]!._id,
       visitorName: 'John Guest (PreApproved)',
       entryTime: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
       preApproved: true,
@@ -287,7 +285,7 @@ async function seed() {
     },
     {
       societyId: soc1._id,
-      unitId: unitsSoc1[2]._id,
+      unitId: unitsSoc1[2]!._id,
       visitorName: 'Zomato Delivery (Manual)',
       entryTime: new Date(Date.now() - 30 * 60 * 1000), // 30 mins ago
       exitTime: new Date(Date.now() - 20 * 60 * 1000), // 20 mins ago

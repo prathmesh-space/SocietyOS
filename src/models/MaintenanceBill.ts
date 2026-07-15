@@ -58,7 +58,7 @@ const maintenanceBillSchema = new Schema<IMaintenanceBill>(
   {
     timestamps: true,
     toJSON: {
-      transform(_doc, ret) {
+      transform(_doc, ret: any) {
         ret.id = ret._id;
         delete ret.__v;
         return ret;

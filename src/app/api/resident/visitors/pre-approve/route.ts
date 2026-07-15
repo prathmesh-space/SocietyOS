@@ -63,7 +63,7 @@ export const POST = withAuth(
         {
           visitorName,
           unitId: auth.unitId.toString(),
-          societyId: auth.societyId.toString(),
+          societyId: auth.societyId!.toString(),
           start: startWindow.toISOString(),
           end: endWindow.toISOString(),
         },

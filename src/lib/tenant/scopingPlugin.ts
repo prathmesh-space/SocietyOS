@@ -49,7 +49,7 @@ export function tenantScopingPlugin(schema: Schema): void {
 
   for (const hookName of queryHooks) {
     schema.pre(hookName, function (this: Query<unknown, unknown>) {
-      const opts = (this.getOptions?.() ?? this.options ?? {}) as { unscoped?: boolean };
+      const opts = ((this as any).getOptions?.() ?? (this as any).options ?? {}) as { unscoped?: boolean };
 
       // Allow explicit unscoped queries (background jobs, Super Admin)
       if (opts.unscoped) {

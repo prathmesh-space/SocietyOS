@@ -48,7 +48,7 @@ export const POST = withAuth(
       await dbConnect();
 
       const notice = await Notice.create({
-        societyId: auth.societyId,
+        societyId: auth.societyId!,
         authorId: auth.userId,
         title,
         body: noticeBody,

@@ -148,7 +148,7 @@ export const POST = withAuth(
             let visitor;
             try {
               visitor = await Visitor.create({
-                societyId: auth.societyId,
+                societyId: auth.societyId!,
                 unitId: unitDoc._id,
                 visitorName: tokVisitorName,
                 entryTime: clientEntryTime, // Original client capture time
@@ -215,7 +215,7 @@ export const POST = withAuth(
             }
 
             const visitor = await Visitor.create({
-              societyId: auth.societyId,
+              societyId: auth.societyId!,
               unitId: unitDoc._id,
               visitorName,
               entryTime: clientEntryTime, // Original client capture time

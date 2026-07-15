@@ -101,6 +101,7 @@ export async function POST(req: NextRequest) {
       userId: user._id.toString(),
       role: user.role,
       societyId: user.societyId?.toString() ?? null,
+      unitId: user.unitId?.toString() ?? null,
     });
 
     // Rotate refresh token: same family, new token
