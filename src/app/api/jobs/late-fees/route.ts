@@ -10,13 +10,14 @@ export async function POST(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;
 
-    // Verify cron secret token if configured (skip for tests)
-    if (
-      cronSecret &&
-      authHeader !== `Bearer ${cronSecret}` &&
-      process.env.NODE_ENV !== 'test'
-    ) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (process.env.NODE_ENV !== 'test') {
+      if (!cronSecret) {
+        console.error('[Job:LateFees] CRON_SECRET is not configured');
+        return NextResponse.json({ error: 'Cron secret configuration error' }, { status: 500 });
+      }
+      if (authHeader !== `Bearer ${cronSecret}`) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
     }
 
     await dbConnect();

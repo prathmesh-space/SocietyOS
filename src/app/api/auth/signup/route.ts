@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import dbConnect from '@/lib/db/connection';
 import User from '@/models/User';
+import { logAuditEvent } from '@/lib/audit/logger';
 import Society from '@/models/Society';
 import Unit from '@/models/Unit';
 import { signupSchema } from '@/lib/validation/auth';
@@ -110,6 +111,22 @@ export async function POST(req: NextRequest) {
       phone: phone || '',
       status: 'pending', // Resident must be approved by Admin
       contestedUnit,
+    });
+
+    // Log user creation audit log
+    await logAuditEvent({
+      action: 'user.create',
+      entityType: 'User',
+      entityId: user._id,
+      afterState: {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        status: user.status,
+        contestedUnit: user.contestedUnit,
+      },
+      actorId: user._id.toString(),
+      societyId: society._id.toString(),
     });
 
     return NextResponse.json(

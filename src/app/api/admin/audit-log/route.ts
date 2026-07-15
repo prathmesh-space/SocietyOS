@@ -52,3 +52,11 @@ export const GET = withAuth(
   },
   { roles: ['admin'] }
 );
+
+export const PATCH = async () => {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+};
+
+export const DELETE = async () => {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+};

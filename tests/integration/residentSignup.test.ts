@@ -164,6 +164,13 @@ describe('Resident Signup & Approval Flow', () => {
     expect(updatedUnit!.primaryResidentId?.toString()).toBe(residentId);
 
     // Verify AuditLog was written
+    const creationLogs = await AuditLog.find({
+      societyId: societyA._id,
+      action: 'user.create',
+      entityId: residentId,
+    }).lean().setOptions({ unscoped: true });
+    expect(creationLogs.length).toBe(1);
+
     const logs = await AuditLog.find({
       societyId: societyA._id,
       action: 'user.approve',

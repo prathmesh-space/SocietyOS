@@ -58,6 +58,16 @@ export const PATCH = withAuth(
         return NextResponse.json({ error: 'Society not found' }, { status: 404 });
       }
 
+      if (validation.data.active === true) {
+        const contactCount = beforeState.emergencyContacts?.length || 0;
+        if (contactCount === 0) {
+          return NextResponse.json(
+            { error: 'Cannot activate society: At least one emergency contact is required.' },
+            { status: 400 }
+          );
+        }
+      }
+
       const updated = await Society.findByIdAndUpdate(
         params.id,
         { $set: validation.data },
