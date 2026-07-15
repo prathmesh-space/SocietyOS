@@ -92,6 +92,7 @@ async function createTestSociety(name: string, prefix: string): Promise<TestSoci
     state: 'Maharashtra',
     pincode: '400001',
     active: true,
+    emergencyContacts: [{ name: 'Test', phone: '1234567890', role: 'Security' }],
     defaultBillAmount: 5000,
   });
 

@@ -35,6 +35,7 @@ beforeAll(async () => {
     state: 'Maharashtra',
     pincode: '400001',
     active: true,
+    emergencyContacts: [{ name: 'Test', phone: '1234567890', role: 'Security' }],
     defaultBillAmount: 4000,
     maxVisitorWindowHours: 24,
   });
@@ -46,6 +47,7 @@ beforeAll(async () => {
     state: 'Maharashtra',
     pincode: '400002',
     active: true,
+    emergencyContacts: [{ name: 'Test', phone: '1234567890', role: 'Security' }],
     defaultBillAmount: 5000,
     maxVisitorWindowHours: 12,
   });

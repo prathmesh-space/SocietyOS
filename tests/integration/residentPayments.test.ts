@@ -61,6 +61,7 @@ beforeAll(async () => {
     state: 'Maharashtra',
     pincode: '400001',
     active: true,
+    emergencyContacts: [{ name: 'Test', phone: '1234567890', role: 'Security' }],
   });
 
   societyB = await Society.create({
@@ -70,6 +71,7 @@ beforeAll(async () => {
     state: 'Maharashtra',
     pincode: '400002',
     active: true,
+    emergencyContacts: [{ name: 'Test', phone: '1234567890', role: 'Security' }],
   });
 
   // Create units
