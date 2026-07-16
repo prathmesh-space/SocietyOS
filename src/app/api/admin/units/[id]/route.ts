@@ -47,9 +47,17 @@ export const PATCH = withAuth(
         return NextResponse.json({ error: 'Unit not found' }, { status: 404 });
       }
 
+      const { squareFeet, areaSqFt, ...rest } = validation.data;
+      const finalAreaSqFt = squareFeet !== undefined ? squareFeet : areaSqFt;
+
+      const updatePayload: Record<string, any> = { ...rest };
+      if (finalAreaSqFt !== undefined) {
+        updatePayload.areaSqFt = finalAreaSqFt;
+      }
+
       const updated = await Unit.findByIdAndUpdate(
         params.id,
-        { $set: validation.data },
+        { $set: updatePayload },
         { new: true, runValidators: true }
       );
 

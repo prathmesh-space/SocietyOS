@@ -22,11 +22,16 @@ export const POST = withAuth(
 
       const { units: unitData } = validation.data;
 
-      // Add societyId to each unit
-      const unitsToCreate = unitData.map((u) => ({
-        ...u,
-        societyId: auth.societyId!,
-      }));
+      // Add societyId to each unit and map squareFeet to areaSqFt
+      const unitsToCreate = unitData.map((u) => {
+        const { squareFeet, areaSqFt, ...rest } = u;
+        const finalAreaSqFt = squareFeet !== undefined ? squareFeet : areaSqFt;
+        return {
+          ...rest,
+          areaSqFt: finalAreaSqFt,
+          societyId: auth.societyId!,
+        };
+      });
 
       // Use insertMany with ordered: false to continue on individual failures
       const results = {

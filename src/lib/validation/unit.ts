@@ -2,16 +2,20 @@ import { z } from 'zod';
 
 export const createUnitSchema = z.object({
   unitNumber: z.string().min(1, 'Unit number is required').max(20).trim(),
+  block: z.string().trim().optional().default(''),
   floor: z.number().int().optional().default(0),
   type: z.string().trim().optional().default('2BHK'),
   areaSqFt: z.number().min(0).optional().default(0),
+  squareFeet: z.number().min(0).optional(),
 });
 
 export const updateUnitSchema = z.object({
   unitNumber: z.string().min(1).max(20).trim().optional(),
+  block: z.string().trim().optional(),
   floor: z.number().int().optional(),
   type: z.string().trim().optional(),
   areaSqFt: z.number().min(0).optional(),
+  squareFeet: z.number().min(0).optional(),
   active: z.boolean().optional(),
 });
 
@@ -20,9 +24,11 @@ export const bulkImportUnitsSchema = z.object({
     .array(
       z.object({
         unitNumber: z.string().min(1).max(20).trim(),
+        block: z.string().trim().optional().default(''),
         floor: z.number().int().optional().default(0),
         type: z.string().trim().optional().default('2BHK'),
         areaSqFt: z.number().min(0).optional().default(0),
+        squareFeet: z.number().min(0).optional(),
       })
     )
     .min(1, 'At least one unit is required')

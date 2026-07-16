@@ -56,10 +56,17 @@ export const POST = withAuth(
         );
       }
 
+      const { unitNumber, block, floor, type, areaSqFt, squareFeet } = validation.data;
+      const finalAreaSqFt = squareFeet !== undefined ? squareFeet : areaSqFt;
+
       await dbConnect();
 
       const unit = await Unit.create({
-        ...validation.data,
+        unitNumber,
+        block,
+        floor,
+        type,
+        areaSqFt: finalAreaSqFt,
         societyId: auth.societyId!,
       });
 

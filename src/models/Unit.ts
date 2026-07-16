@@ -7,6 +7,7 @@ export interface IUnit extends Document {
   _id: Types.ObjectId;
   societyId: Types.ObjectId;
   unitNumber: string;
+  block: string;
   floor: number;
   type: string; // e.g., '1BHK', '2BHK', '3BHK', 'Shop'
   areaSqFt: number;
@@ -25,6 +26,11 @@ const unitSchema = new Schema<IUnit>(
       required: [true, 'Unit number is required'],
       trim: true,
       maxlength: 20,
+    },
+    block: {
+      type: String,
+      trim: true,
+      default: '',
     },
     floor: {
       type: Number,
@@ -55,6 +61,7 @@ const unitSchema = new Schema<IUnit>(
     toJSON: {
       transform(_doc, ret: any) {
         ret.id = ret._id;
+        ret.squareFeet = ret.areaSqFt;
         delete ret.__v;
         return ret;
       },
@@ -66,7 +73,7 @@ const unitSchema = new Schema<IUnit>(
 unitSchema.plugin(tenantScopingPlugin);
 
 // Compound unique: unitNumber unique within a society
-unitSchema.index({ societyId: 1, unitNumber: 1 }, { unique: true });
+unitSchema.index({ societyId: 1, block: 1, unitNumber: 1 }, { unique: true });
 
 const Unit: Model<IUnit> =
   mongoose.models.Unit || mongoose.model<IUnit>('Unit', unitSchema);
