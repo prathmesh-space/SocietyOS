@@ -73,6 +73,10 @@ maintenanceBillSchema.plugin(tenantScopingPlugin);
 // Compound unique index to prevent duplicate bill generation for the same period in a unit of a society
 maintenanceBillSchema.index({ societyId: 1, unitId: 1, billingPeriod: 1 }, { unique: true });
 
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.MaintenanceBill;
+}
+
 const MaintenanceBill: Model<IMaintenanceBill> =
   mongoose.models.MaintenanceBill || mongoose.model<IMaintenanceBill>('MaintenanceBill', maintenanceBillSchema);
 

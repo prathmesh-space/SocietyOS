@@ -60,7 +60,11 @@ export default function ResidentComplaintsPage() {
       });
 
       if ('error' in res) {
-        alert(res.error || 'Failed to file complaint');
+        let errorMsg = res.error || 'Failed to file complaint';
+        if (res.details) {
+          errorMsg += '\n\n' + Object.values(res.details).map(arr => Array.isArray(arr) ? arr.join(', ') : arr).join('\n');
+        }
+        alert(errorMsg);
       } else {
         setIsDialogOpen(false);
         setFormData({ title: '', description: '', category: 'Maintenance' });
@@ -119,6 +123,7 @@ export default function ResidentComplaintsPage() {
                 <Label>Detailed Description</Label>
                 <textarea 
                   required 
+                  minLength={10}
                   rows={4}
                   className="flex w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
                   placeholder="Provide all relevant details..."

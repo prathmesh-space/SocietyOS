@@ -10,10 +10,9 @@ import Script from 'next/script';
 
 interface Bill {
   _id: string;
-  billingMonth: string;
-  baseAmount: number;
+  billingPeriod: string;
+  amount: number;
   lateFeeAmount: number;
-  totalAmount: number;
   status: 'pending' | 'paid' | 'overdue' | 'void';
   dueDate: string;
 }
@@ -80,7 +79,7 @@ export default function ResidentPaymentsPage() {
 
       const rzp = new (window as any).Razorpay(options);
       rzp.on('payment.failed', function (response: any) {
-        alert('Payment Failed. Please try again.');
+        alert(`Payment Failed: ${response.error?.description || 'Please try again.'}`);
       });
       rzp.open();
     } catch (err) {
@@ -116,7 +115,7 @@ export default function ResidentPaymentsPage() {
               <CardContent className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <h3 className="font-semibold text-lg text-slate-900">Maintenance: {bill.billingMonth}</h3>
+                    <h3 className="font-semibold text-lg text-slate-900">Maintenance: {bill.billingPeriod}</h3>
                     <Badge variant={bill.status === 'paid' ? 'success' : bill.status === 'overdue' ? 'destructive' : 'warning'}>
                       {bill.status.toUpperCase()}
                     </Badge>
@@ -125,7 +124,7 @@ export default function ResidentPaymentsPage() {
                   <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
                     <div>
                       <span className="text-slate-500">Base Amount:</span>
-                      <span className="font-medium ml-2">₹{bill.baseAmount}</span>
+                      <span className="font-medium ml-2">₹{bill.amount}</span>
                     </div>
                     <div>
                       <span className="text-slate-500">Late Fee:</span>
@@ -143,7 +142,7 @@ export default function ResidentPaymentsPage() {
                 <div className="flex flex-col items-end gap-3 border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6 min-w-[200px]">
                   <div className="text-right">
                     <p className="text-xs text-slate-500 mb-1">Total Payable</p>
-                    <p className="text-3xl font-bold text-slate-900">₹{bill.totalAmount}</p>
+                    <p className="text-3xl font-bold text-slate-900">₹{bill.amount + bill.lateFeeAmount}</p>
                   </div>
                   
                   {bill.status === 'paid' ? (

@@ -33,12 +33,16 @@ export default function ResidentVisitorsPage() {
     setIsGenerating(true);
 
     try {
+      const arrival = formData.expectedArrival ? new Date(formData.expectedArrival) : new Date();
+      const endWindow = new Date(arrival.getTime() + 12 * 60 * 60 * 1000); // 12 hour default window
+
       const payload = {
-        ...formData,
-        expectedArrival: formData.expectedArrival ? new Date(formData.expectedArrival).toISOString() : undefined,
+        visitorName: formData.name,
+        startWindow: arrival.toISOString(),
+        endWindow: endWindow.toISOString(),
       };
 
-      const res = await apiClient<{ qrToken: string; validUntil: string }>('/api/resident/visitors/pre-approve', {
+      const res = await apiClient<{ token: string; endWindow: string }>('/api/resident/visitors/pre-approve', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
@@ -47,8 +51,8 @@ export default function ResidentVisitorsPage() {
         alert(res.error || 'Failed to pre-approve visitor');
       } else {
         setQrCodeData({
-          token: res.data.qrToken,
-          validUntil: res.data.validUntil,
+          token: res.data.token,
+          validUntil: res.data.endWindow,
           visitorName: formData.name,
         });
       }
@@ -139,8 +143,8 @@ export default function ResidentVisitorsPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label>Expected Arrival (Optional)</Label>
-                <Input type="datetime-local" value={formData.expectedArrival} onChange={(e) => setFormData({...formData, expectedArrival: e.target.value})} />
+                <Label>Expected Arrival Date (Optional)</Label>
+                <Input type="date" value={formData.expectedArrival} onChange={(e) => setFormData({...formData, expectedArrival: e.target.value})} />
               </div>
               
               <Button type="submit" className="w-full" disabled={isGenerating}>

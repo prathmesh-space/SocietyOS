@@ -15,6 +15,7 @@ interface EmergencyContact {
 }
 
 interface SocietySettings {
+  id: string;
   name: string;
   address: string;
   city: string;
@@ -130,10 +131,30 @@ export default function AdminSettingsPage() {
           <CardContent>
             <div className="grid grid-cols-2 gap-4 opacity-70 pointer-events-none">
               <div>
+                <Label>Society ID</Label>
+                <div className="flex gap-2">
+                  <Input value={settings.id} readOnly className="font-mono text-sm" />
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="pointer-events-auto shrink-0"
+                    onClick={() => {
+                      navigator.clipboard.writeText(settings.id);
+                      alert('Society ID copied to clipboard!');
+                    }}
+                    title="Copy Society ID"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </Button>
+                </div>
+              </div>
+              <div>
                 <Label>Society Name</Label>
                 <Input value={settings.name} readOnly />
               </div>
-              <div>
+              <div className="col-span-2">
                 <Label>Location</Label>
                 <Input value={`${settings.city}, ${settings.state} - ${settings.pincode}`} readOnly />
               </div>

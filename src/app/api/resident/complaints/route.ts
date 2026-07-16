@@ -51,7 +51,7 @@ export const POST = withAuth(
         );
       }
 
-      const { category, description } = validation.data;
+      const { category, title, description } = validation.data;
 
       await dbConnect();
 
@@ -61,6 +61,7 @@ export const POST = withAuth(
         unitId: auth.unitId!,
         residentId: auth.userId,
         category,
+        title,
         description,
         status: 'Open',
       });
@@ -72,6 +73,7 @@ export const POST = withAuth(
         entityId: complaint._id,
         afterState: {
           category,
+          title,
           description,
           status: 'Open',
           unitId: auth.unitId.toString(),

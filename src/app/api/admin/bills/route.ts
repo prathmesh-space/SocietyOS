@@ -17,18 +17,22 @@ export const GET = withAuth(
       const query: Record<string, unknown> = {};
       if (status) query.status = status;
 
-      const [bills, total] = await Promise.all([
-        MaintenanceBill.find(query)
+      const bills = await MaintenanceBill.find(query)
           .populate('unitId', 'unitNumber block floor')
           .sort({ createdAt: -1 })
           .skip((page - 1) * limit)
           .limit(limit)
-          .lean(),
-        MaintenanceBill.countDocuments(query),
-      ]);
+          .lean();
+          
+      const total = await MaintenanceBill.countDocuments(query);
+      
+      const mappedBills = bills.map((b: any) => ({
+        ...b,
+        id: b._id.toString()
+      }));
 
       return NextResponse.json({
-        bills,
+        bills: mappedBills,
         pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
       });
     } catch (error) {

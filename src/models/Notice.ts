@@ -7,6 +7,7 @@ export interface INotice extends Document {
   authorId: Types.ObjectId;
   title: string;
   body: string;
+  isImportant: boolean;
   expiryDate: Date | null;
   lastEditedAt: Date | null;
   createdAt: Date;
@@ -32,6 +33,10 @@ const noticeSchema = new Schema<INotice>(
       required: [true, 'Body content is required'],
       trim: true,
     },
+    isImportant: {
+      type: Boolean,
+      default: false,
+    },
     expiryDate: {
       type: Date,
       default: null,
@@ -56,6 +61,10 @@ const noticeSchema = new Schema<INotice>(
 
 // Apply tenant scoping boundary checks
 noticeSchema.plugin(tenantScopingPlugin);
+
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.Notice;
+}
 
 const Notice: Model<INotice> =
   mongoose.models.Notice || mongoose.model<INotice>('Notice', noticeSchema);

@@ -40,6 +40,14 @@ export const POST = withAuth(
         );
       }
 
+      const totalAmount = bill.amount + bill.lateFeeAmount;
+      if (totalAmount <= 0) {
+        return NextResponse.json(
+          { error: 'Bill amount must be at least ₹1 to process online payment.' },
+          { status: 400 }
+        );
+      }
+
       let order;
       const keyId = process.env.RAZORPAY_KEY_ID;
       const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -54,7 +62,7 @@ export const POST = withAuth(
       ) {
         order = {
           id: `order_${Math.random().toString(36).substring(2, 11)}`,
-          amount: Math.round(bill.amount * 100),
+          amount: Math.round(totalAmount * 100),
           currency: 'INR',
         };
       } else {
@@ -64,17 +72,16 @@ export const POST = withAuth(
         });
 
         order = await razorpay.orders.create({
-          amount: Math.round(bill.amount * 100), // amount in paise
+          amount: Math.round(totalAmount * 100), // amount in paise
           currency: 'INR',
           receipt: bill._id.toString(),
         });
       }
 
-      // Create a pending Payment record in our database
       const payment = await Payment.create({
         societyId: auth.societyId!,
         billId: bill._id,
-        amount: bill.amount,
+        amount: totalAmount,
         paymentMethod: 'razorpay',
         razorpayOrderId: order.id,
         status: 'pending',
@@ -87,13 +94,14 @@ export const POST = withAuth(
           currency: 'INR',
           paymentId: payment._id,
           billId: bill._id,
+          keyId: keyId || 'rzp_test_placeholder', // Return the key so frontend can initialize SDK
         },
         { status: 201 }
       );
     } catch (error) {
       console.error('[Resident:Payments] Create order error:', error);
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: 'Internal server error', details: JSON.stringify(error) },
         { status: 500 }
       );
     }

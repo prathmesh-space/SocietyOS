@@ -18,6 +18,7 @@ export const GET = withAuth(
 
       return NextResponse.json({
         settings: {
+          id: society._id.toString(),
           name: society.name,
           address: society.address,
           city: society.city,

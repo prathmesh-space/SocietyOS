@@ -43,7 +43,7 @@ export const POST = withAuth(
         );
       }
 
-      const { title, body: noticeBody, expiryDate } = validation.data;
+      const { title, body: noticeBody, isImportant, expiryDate } = validation.data;
 
       await dbConnect();
 
@@ -52,6 +52,7 @@ export const POST = withAuth(
         authorId: auth.userId,
         title,
         body: noticeBody,
+        isImportant: isImportant || false,
         expiryDate: expiryDate || null,
       });
 
@@ -62,6 +63,7 @@ export const POST = withAuth(
         afterState: {
           title,
           body: noticeBody,
+          isImportant: isImportant || false,
           expiryDate: expiryDate ? expiryDate.toISOString() : null,
         },
         actorId: auth.userId,

@@ -20,10 +20,9 @@ interface Unit {
 interface Bill {
   _id: string;
   unitId: Unit;
-  billingMonth: string;
-  baseAmount: number;
+  billingPeriod: string;
+  amount: number;
   lateFeeAmount: number;
-  totalAmount: number;
   status: 'pending' | 'paid' | 'overdue' | 'void';
   dueDate: string;
 }
@@ -63,7 +62,7 @@ export default function AdminBillsPage() {
     setIsGenerating(true);
     try {
       const payload = {
-        billingMonth: formData.month,
+        billingPeriod: formData.month,
         dueDate: formData.dueDate,
         overrides: [],
       };
@@ -172,14 +171,14 @@ export default function AdminBillsPage() {
                         <TableCell className="font-medium">
                           {b.unitId?.block}-{b.unitId?.unitNumber}
                         </TableCell>
-                        <TableCell>{b.billingMonth}</TableCell>
+                        <TableCell>{b.billingPeriod}</TableCell>
                         <TableCell>
-                          <div>₹{b.totalAmount}</div>
+                          <div>₹{b.amount}</div>
                           {b.lateFeeAmount > 0 && <div className="text-xs text-red-500">+₹{b.lateFeeAmount} late fee</div>}
                         </TableCell>
                         <TableCell>{new Date(b.dueDate).toLocaleDateString()}</TableCell>
                         <TableCell>
-                          <Badge variant={b.status === 'paid' ? 'success' : b.status === 'overdue' ? 'destructive' : 'warning'}>
+                          <Badge variant={b.status.toLowerCase() === 'paid' ? 'success' : b.status.toLowerCase() === 'overdue' ? 'destructive' : 'warning'}>
                             {b.status.toUpperCase()}
                           </Badge>
                         </TableCell>

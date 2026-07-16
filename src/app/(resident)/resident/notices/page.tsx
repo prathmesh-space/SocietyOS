@@ -9,9 +9,9 @@ import { Megaphone, Calendar, Clock } from 'lucide-react';
 interface Notice {
   _id: string;
   title: string;
-  content: string;
+  body: string;
   isImportant: boolean;
-  expiresAt?: string;
+  expiryDate?: string | null;
   createdAt: string;
 }
 
@@ -72,11 +72,11 @@ export default function ResidentNoticesPage() {
                       {new Date(notice.createdAt).toLocaleDateString()}
                     </div>
                   </div>
-                  <p className="text-slate-600 whitespace-pre-wrap text-sm leading-relaxed">{notice.content}</p>
+                  <p className="text-slate-600 whitespace-pre-wrap text-sm leading-relaxed">{notice.body}</p>
                   
-                  {notice.expiresAt && (
+                  {notice.expiryDate && (
                     <p className="text-xs text-amber-600 pt-2 flex items-center gap-1.5 font-medium">
-                      <Clock className="w-3.5 h-3.5" /> Valid till {new Date(notice.expiresAt).toLocaleDateString()}
+                      <Clock className="w-3.5 h-3.5" /> Valid till {new Date(notice.expiryDate).toLocaleDateString()}
                     </p>
                   )}
                 </div>

@@ -73,6 +73,10 @@ paymentSchema.plugin(tenantScopingPlugin);
 // Unique index on Razorpay event ID specifically to enforce webhook idempotency (sparse unique index)
 paymentSchema.index({ razorpayEventId: 1 }, { unique: true, sparse: true });
 
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.Payment;
+}
+
 const Payment: Model<IPayment> =
   mongoose.models.Payment || mongoose.model<IPayment>('Payment', paymentSchema);
 

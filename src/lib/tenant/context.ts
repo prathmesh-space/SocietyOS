@@ -12,8 +12,16 @@ export interface TenantContext {
   societyId: string | null; // null only for Super Admin
 }
 
-// The AsyncLocalStorage instance — one per process
-const tenantStorage = new AsyncLocalStorage<TenantContext>();
+// The AsyncLocalStorage instance — one per process (with HMR support)
+const globalForTenant = globalThis as unknown as {
+  tenantStorage: AsyncLocalStorage<TenantContext> | undefined;
+};
+
+const tenantStorage = globalForTenant.tenantStorage ?? new AsyncLocalStorage<TenantContext>();
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForTenant.tenantStorage = tenantStorage;
+}
 
 /**
  * Run a function within a tenant context.

@@ -91,6 +91,27 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ received: true, message: 'Bill already paid' });
       }
 
+      // Generate a receipt number and attempt to save a new Receipt FIRST.
+      // If a race condition occurs, this throws E11000 and crashes BEFORE
+      // mutating bill or payment. Razorpay retries, and it succeeds safely.
+      let receipt = await Receipt.findOne({ paymentId: payment._id }).setOptions({ unscoped: true });
+      
+      let receiptNumber = receipt?.receiptNumber;
+      if (!receipt) {
+        const receiptCount = await Receipt.countDocuments({}).setOptions({ unscoped: true });
+        const cleanBillingPeriod = bill.billingPeriod.replace('-', '');
+        receiptNumber = `RCP-${cleanBillingPeriod}-${String(receiptCount + 1).padStart(4, '0')}`;
+  
+        receipt = await Receipt.create({
+          societyId: payment.societyId,
+          paymentId: payment._id,
+          billId: bill._id,
+          receiptNumber,
+          amount: payment.amount,
+          paidAt: new Date(),
+        });
+      }
+
       // Update bill to Paid
       bill.status = 'Paid';
       await bill.save();
@@ -101,20 +122,6 @@ export async function POST(req: NextRequest) {
       payment.razorpayEventId = eventId;
       payment.razorpaySignature = signature;
       await payment.save();
-
-      // Generate a receipt number and save a new Receipt
-      const receiptCount = await Receipt.countDocuments({}).setOptions({ unscoped: true });
-      const cleanBillingPeriod = bill.billingPeriod.replace('-', '');
-      const receiptNumber = `RCP-${cleanBillingPeriod}-${String(receiptCount + 1).padStart(4, '0')}`;
-
-      const receipt = await Receipt.create({
-        societyId: payment.societyId,
-        paymentId: payment._id,
-        billId: bill._id,
-        receiptNumber,
-        amount: payment.amount,
-        paidAt: new Date(),
-      });
 
       // Audit Log for Payment Received
       await logAuditEvent({

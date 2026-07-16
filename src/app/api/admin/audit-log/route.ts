@@ -31,18 +31,22 @@ export const GET = withAuth(
         query.timestamp = dateFilter;
       }
 
-      const [logs, total] = await Promise.all([
-        AuditLog.find(query)
+      const logs = await AuditLog.find(query)
           .populate('actorId', 'name email role')
           .sort({ timestamp: -1 })
           .skip((page - 1) * limit)
           .limit(limit)
-          .lean(),
-        AuditLog.countDocuments(query),
-      ]);
+          .lean();
+          
+      const total = await AuditLog.countDocuments(query);
+      
+      const mappedLogs = logs.map((log: any) => ({
+        ...log,
+        id: log._id.toString()
+      }));
 
       return NextResponse.json({
-        logs,
+        logs: mappedLogs,
         pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
       });
     } catch (error) {

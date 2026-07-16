@@ -75,6 +75,10 @@ unitSchema.plugin(tenantScopingPlugin);
 // Compound unique: unitNumber unique within a society
 unitSchema.index({ societyId: 1, block: 1, unitNumber: 1 }, { unique: true });
 
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.Unit;
+}
+
 const Unit: Model<IUnit> =
   mongoose.models.Unit || mongoose.model<IUnit>('Unit', unitSchema);
 

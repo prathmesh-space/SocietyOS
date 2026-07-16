@@ -185,6 +185,10 @@ for (const hookName of queryHooks) {
   });
 }
 
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.User;
+}
+
 const User: Model<IUser> =
   mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 

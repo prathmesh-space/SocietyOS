@@ -20,18 +20,22 @@ export const GET = withAuth(
       if (status) query.status = status;
       if (role) query.role = role;
 
-      const [users, total] = await Promise.all([
-        User.find(query)
+      const users = await User.find(query)
           .populate('unitId', 'unitNumber floor type')
           .sort({ createdAt: -1 })
           .skip((page - 1) * limit)
           .limit(limit)
-          .lean(),
-        User.countDocuments(query),
-      ]);
+          .lean();
+          
+      const total = await User.countDocuments(query);
+      
+      const mappedUsers = users.map((u: any) => ({
+        ...u,
+        id: u._id.toString()
+      }));
 
       return NextResponse.json({
-        users,
+        users: mappedUsers,
         pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
       });
     } catch (error) {

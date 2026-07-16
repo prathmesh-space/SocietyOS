@@ -13,9 +13,9 @@ import { Megaphone, Plus, Calendar , Clock} from "lucide-react";
 interface Notice {
   _id: string;
   title: string;
-  content: string;
+  body: string;
   isImportant: boolean;
-  expiresAt?: string;
+  expiryDate?: string | null;
   createdAt: string;
 }
 
@@ -27,9 +27,9 @@ export default function AdminNoticesPage() {
   // Form State
   const [formData, setFormData] = useState({
     title: '',
-    content: '',
+    body: '',
     isImportant: false,
-    expiresAt: '',
+    expiryDate: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,7 +57,7 @@ export default function AdminNoticesPage() {
     try {
       const payload = {
         ...formData,
-        expiresAt: formData.expiresAt ? new Date(formData.expiresAt).toISOString() : undefined,
+        expiryDate: formData.expiryDate ? new Date(formData.expiryDate).toISOString() : undefined,
       };
 
       const res = await apiClient('/api/admin/notices', {
@@ -69,7 +69,7 @@ export default function AdminNoticesPage() {
         alert(res.error || 'Failed to create notice');
       } else {
         setIsDialogOpen(false);
-        setFormData({ title: '', content: '', isImportant: false, expiresAt: '' });
+        setFormData({ title: '', body: '', isImportant: false, expiryDate: '' });
         fetchNotices();
       }
     } catch (err) {
@@ -115,8 +115,8 @@ export default function AdminNoticesPage() {
                   rows={4}
                   className="flex w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
                   placeholder="Details of the announcement..."
-                  value={formData.content} 
-                  onChange={(e) => setFormData({...formData, content: e.target.value})} 
+                  value={formData.body} 
+                  onChange={(e) => setFormData({...formData, body: e.target.value})} 
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -132,8 +132,8 @@ export default function AdminNoticesPage() {
                   </label>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="expiresAt">Expiry Date (Optional)</Label>
-                  <Input id="expiresAt" type="date" value={formData.expiresAt} onChange={(e) => setFormData({...formData, expiresAt: e.target.value})} />
+                  <Label htmlFor="expiryDate">Expiry Date (Optional)</Label>
+                  <Input id="expiryDate" type="date" value={formData.expiryDate} onChange={(e) => setFormData({...formData, expiryDate: e.target.value})} />
                 </div>
               </div>
               <DialogFooter className="pt-4">
@@ -159,7 +159,7 @@ export default function AdminNoticesPage() {
           </div>
         ) : (
           notices.map(notice => {
-            const isExpired = notice.expiresAt && new Date(notice.expiresAt) < new Date();
+            const isExpired = notice.expiryDate && new Date(notice.expiryDate) < new Date();
             return (
               <Card key={notice._id} className={notice.isImportant ? 'border-red-200 bg-red-50/10' : ''}>
                 <CardContent className="p-6 flex flex-col sm:flex-row gap-6">
@@ -178,11 +178,11 @@ export default function AdminNoticesPage() {
                         {new Date(notice.createdAt).toLocaleDateString()}
                       </div>
                     </div>
-                    <p className="text-slate-600 whitespace-pre-wrap text-sm leading-relaxed">{notice.content}</p>
+                    <p className="text-slate-600 whitespace-pre-wrap text-sm leading-relaxed">{notice.body}</p>
                     
-                    {notice.expiresAt && !isExpired && (
+                    {notice.expiryDate && !isExpired && (
                       <p className="text-xs text-slate-500 pt-2 flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5" /> Expires on {new Date(notice.expiresAt).toLocaleDateString()}
+                        <Clock className="w-3.5 h-3.5" /> Expires on {new Date(notice.expiryDate).toLocaleDateString()}
                       </p>
                     )}
                   </div>

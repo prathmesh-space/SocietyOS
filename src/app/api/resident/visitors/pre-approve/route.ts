@@ -66,6 +66,7 @@ export const POST = withAuth(
           societyId: auth.societyId!.toString(),
           start: startWindow.toISOString(),
           end: endWindow.toISOString(),
+          type: 'visitor_pass',
         },
         secret
       );

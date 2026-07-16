@@ -11,9 +11,8 @@ interface AuditLog {
   _id: string;
   action: string;
   entityType: string;
-  actorId?: { name: string; email: string };
-  isSystemAction: boolean;
-  createdAt: string;
+  actorId?: { name: string; email: string } | null;
+  timestamp: string;
 }
 
 export default function AdminAuditLogPage() {
@@ -76,7 +75,7 @@ export default function AdminAuditLogPage() {
                     <TableCell className="whitespace-nowrap text-sm text-slate-500">
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5" />
-                        {new Date(log.createdAt).toLocaleString()}
+                        {new Date(log.timestamp).toLocaleString()}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -86,7 +85,7 @@ export default function AdminAuditLogPage() {
                     </TableCell>
                     <TableCell className="text-sm font-medium">{log.entityType}</TableCell>
                     <TableCell>
-                      {log.isSystemAction ? (
+                      {!log.actorId ? (
                         <div className="flex items-center gap-2 text-indigo-600 text-sm font-medium">
                           <ShieldAlert className="w-4 h-4" /> System
                         </div>

@@ -7,6 +7,7 @@ export interface IComplaint extends Document {
   unitId: Types.ObjectId;
   residentId: Types.ObjectId;
   category: string;
+  title: string;
   description: string;
   status: 'Open' | 'In Progress' | 'Resolved' | 'Closed';
   resolutionNote: string | null;
@@ -33,6 +34,11 @@ const complaintSchema = new Schema<IComplaint>(
     category: {
       type: String,
       required: [true, 'Category is required'],
+      trim: true,
+    },
+    title: {
+      type: String,
+      required: [true, 'Title is required'],
       trim: true,
     },
     description: {
@@ -75,6 +81,10 @@ const complaintSchema = new Schema<IComplaint>(
 
 // Apply tenant scoping plugin - automatically injects societyId on queries and creation
 complaintSchema.plugin(tenantScopingPlugin);
+
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.Complaint;
+}
 
 const Complaint: Model<IComplaint> =
   mongoose.models.Complaint || mongoose.model<IComplaint>('Complaint', complaintSchema);

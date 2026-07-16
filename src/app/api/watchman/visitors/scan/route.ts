@@ -31,7 +31,14 @@ export const POST = withAuth(
         );
       }
 
-      const { visitorName, unitId, societyId, start, end } = decoded;
+      const { visitorName, unitId, societyId, start, end, type } = decoded;
+
+      if (type !== 'visitor_pass') {
+        return NextResponse.json(
+          { error: 'Invalid token type', code: 'invalid-type' },
+          { status: 400 }
+        );
+      }
 
       // 1. Wrong Society check
       if (societyId !== auth.societyId) {

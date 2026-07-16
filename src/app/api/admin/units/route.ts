@@ -19,8 +19,6 @@ export const GET = withAuth(
 
       const query: Record<string, unknown> = {};
       if (activeOnly) query.active = true;
-      if (search) query.unitNumber = { $regex: search, $options: 'i' };
-
       const [units, total] = await Promise.all([
         Unit.find(query)
           .populate('primaryResidentId', 'name email phone')
@@ -31,13 +29,19 @@ export const GET = withAuth(
         Unit.countDocuments(query),
       ]);
 
+      const mappedUnits = units.map((u: any) => ({
+        ...u,
+        id: u._id.toString(),
+        squareFeet: u.areaSqFt,
+      }));
+
       return NextResponse.json({
-        units,
+        units: mappedUnits,
         pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('[Admin:Units] GET error:', error);
-      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error', details: error.message, stack: error.stack }, { status: 500 });
     }
   },
   { roles: ['admin'] }

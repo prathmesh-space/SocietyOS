@@ -151,6 +151,10 @@ auditLogSchema.pre('deleteMany', function () {
   throw new Error('AuditLog entries cannot be deleted.');
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.AuditLog;
+}
+
 const AuditLog: Model<IAuditLog> =
   mongoose.models.AuditLog || mongoose.model<IAuditLog>('AuditLog', auditLogSchema);
 
