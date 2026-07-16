@@ -76,7 +76,7 @@ async function attemptRefresh(): Promise<boolean> {
 export async function apiClient<T = unknown>(
   url: string,
   options: ApiClientOptions = {}
-): Promise<{ data: T; status: number } | { error: string; status: number }> {
+): Promise<{ data: T; status: number } | { error: string; status: number; details?: any }> {
   const { skipAuth, ...fetchOptions } = options;
 
   const headers = new Headers(fetchOptions.headers);
@@ -120,7 +120,7 @@ export async function apiClient<T = unknown>(
   const data = await response.json();
 
   if (!response.ok) {
-    return { error: data.error || 'Request failed', status: response.status };
+    return { error: data.error || 'Request failed', status: response.status, details: data.details };
   }
 
   return { data, status: response.status };
