@@ -7,17 +7,35 @@ import Receipt from '@/models/Receipt';
 import Counter from '@/models/Counter';
 import { logAuditEvent } from '@/lib/audit/logger';
 
+const isTestEnv = process.env.NODE_ENV === 'test';
+const safeLogger = {
+  warn: (...args: unknown[]) => {
+    if (isTestEnv) {
+      console.info('[Webhook:Razorpay]', ...args);
+    } else {
+      console.warn(...args);
+    }
+  },
+  error: (...args: unknown[]) => {
+    if (isTestEnv) {
+      console.info('[Webhook:Razorpay]', ...args);
+    } else {
+      console.error(...args);
+    }
+  },
+};
+
 export async function POST(req: NextRequest) {
   try {
     const signature = req.headers.get('x-razorpay-signature');
     if (!signature) {
-      console.warn('[Webhook:Razorpay] Missing signature header');
+      safeLogger.warn('Missing signature header');
       return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
     }
 
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
     if (!webhookSecret) {
-      console.error('[Webhook:Razorpay] RAZORPAY_WEBHOOK_SECRET is not configured');
+      safeLogger.error('RAZORPAY_WEBHOOK_SECRET is not configured');
       return NextResponse.json({ error: 'Webhook configuration error' }, { status: 500 });
     }
 
@@ -30,7 +48,7 @@ export async function POST(req: NextRequest) {
       .digest('hex');
 
     if (expectedSignature !== signature) {
-      console.warn('[Webhook:Razorpay] Invalid webhook signature');
+      safeLogger.warn('Invalid webhook signature');
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
@@ -67,7 +85,7 @@ export async function POST(req: NextRequest) {
         .setOptions({ unscoped: true });
 
       if (!payment) {
-        console.warn(`[Webhook:Razorpay] Payment record not found for order_id: ${orderId}`);
+        safeLogger.warn(`Payment record not found for order_id: ${orderId}`);
         return NextResponse.json({ error: 'Payment record not found' }, { status: 404 });
       }
 
@@ -76,7 +94,7 @@ export async function POST(req: NextRequest) {
         .setOptions({ unscoped: true });
 
       if (!bill) {
-        console.warn(`[Webhook:Razorpay] MaintenanceBill not found for ID: ${payment.billId}`);
+        safeLogger.warn(`MaintenanceBill not found for ID: ${payment.billId}`);
         return NextResponse.json({ error: 'Maintenance bill not found' }, { status: 404 });
       }
 
@@ -170,7 +188,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ received: true, message: 'Unhandled event type' });
   } catch (error) {
-    console.error('[Webhook:Razorpay] Unexpected error:', error);
+    safeLogger.error('Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
