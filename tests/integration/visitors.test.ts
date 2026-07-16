@@ -37,6 +37,8 @@ beforeAll(async () => {
   // Force register models to avoid missing schema errors in tests
   const _forceVisitor = Visitor.modelName;
   const _forceUnit = Unit.modelName;
+  
+  await Visitor.init();
 
   await cleanupTestData();
 
@@ -145,9 +147,7 @@ afterAll(async () => {
 });
 
 async function cleanupTestData() {
-  try {
-    await mongoose.connection.db!.collection('visitors').drop();
-  } catch (e) {}
+  await Visitor.deleteMany({}).setOptions({ unscoped: true });
 
   const testSocieties = await Society.find({
     name: { $in: ['Visitor Test Society A', 'Visitor Test Society B'] },
