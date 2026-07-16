@@ -70,7 +70,7 @@ export const POST = withAuth(
       await logAuditEvent({
         action: 'complaint.create',
         entityType: 'Complaint',
-        entityId: complaint._id,
+        entityId: complaint._id.toString(),
         afterState: {
           category,
           title,
@@ -85,7 +85,10 @@ export const POST = withAuth(
       return NextResponse.json(
         {
           message: 'Complaint filed successfully',
-          complaint,
+          complaint: {
+            ...complaint.toJSON(),
+            id: complaint._id.toString(),
+          },
         },
         { status: 201 }
       );
