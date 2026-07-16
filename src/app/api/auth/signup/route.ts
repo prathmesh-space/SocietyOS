@@ -10,6 +10,8 @@ import { hashPassword } from '@/lib/auth/password';
 import { signupRateLimiter, getRateLimitKey } from '@/lib/auth/rateLimit';
 import { runWithTenantContext } from '@/lib/tenant';
 
+import mongoose from 'mongoose';
+
 export async function POST(req: NextRequest) {
   try {
     // Rate limiting
@@ -38,6 +40,21 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, password, name, phone, societyId, unitId } = validation.data;
+
+    // Validate MongoDB ObjectIds
+    if (!mongoose.Types.ObjectId.isValid(societyId)) {
+      return NextResponse.json(
+        { error: 'Invalid Society ID format' },
+        { status: 400 }
+      );
+    }
+
+    if (unitId && !mongoose.Types.ObjectId.isValid(unitId)) {
+      return NextResponse.json(
+        { error: 'Invalid Unit ID format' },
+        { status: 400 }
+      );
+    }
 
     await dbConnect();
 
