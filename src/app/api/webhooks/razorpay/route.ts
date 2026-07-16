@@ -4,6 +4,7 @@ import dbConnect from '@/lib/db/connection';
 import MaintenanceBill from '@/models/MaintenanceBill';
 import Payment from '@/models/Payment';
 import Receipt from '@/models/Receipt';
+import Counter from '@/models/Counter';
 import { logAuditEvent } from '@/lib/audit/logger';
 
 export async function POST(req: NextRequest) {
@@ -98,9 +99,14 @@ export async function POST(req: NextRequest) {
       
       let receiptNumber = receipt?.receiptNumber;
       if (!receipt) {
-        const receiptCount = await Receipt.countDocuments({}).setOptions({ unscoped: true });
         const cleanBillingPeriod = bill.billingPeriod.replace('-', '');
-        receiptNumber = `RCP-${cleanBillingPeriod}-${String(receiptCount + 1).padStart(4, '0')}`;
+        const counterDoc = await Counter.findOneAndUpdate(
+          { _id: `receipt-${cleanBillingPeriod}` },
+          { $inc: { seq: 1 } },
+          { new: true, upsert: true, setDefaultsOnInsert: true }
+        ).setOptions({ unscoped: true });
+        
+        receiptNumber = `RCP-${cleanBillingPeriod}-${String(counterDoc.seq).padStart(4, '0')}`;
   
         receipt = await Receipt.create({
           societyId: payment.societyId,

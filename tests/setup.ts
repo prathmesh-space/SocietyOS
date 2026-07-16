@@ -1,0 +1,1 @@
+process.env.RAZORPAY_WEBHOOK_SECRET ||= 'test_webhook_secret';
