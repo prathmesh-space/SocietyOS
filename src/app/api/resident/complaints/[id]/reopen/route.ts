@@ -38,6 +38,7 @@ export const POST = withAuth(
         unitId: originalComplaint.unitId,
         residentId: auth.userId,
         category: originalComplaint.category,
+        title: originalComplaint.title,
         description: `Reopened: ${originalComplaint.description}`,
         status: 'Open',
         reopenedFromId: originalComplaint._id,
@@ -60,7 +61,10 @@ export const POST = withAuth(
       return NextResponse.json(
         {
           message: 'Complaint reopened successfully into a new record',
-          complaint: newComplaint,
+          complaint: {
+            ...newComplaint.toJSON(),
+            id: newComplaint._id.toString(),
+          },
         },
         { status: 201 }
       );

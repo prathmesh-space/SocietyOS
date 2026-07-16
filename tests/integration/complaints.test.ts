@@ -211,6 +211,7 @@ describe('Complaints Management & Status Pipeline API', () => {
   test('Happy Path: Resident A1 can file a complaint', async () => {
     const payload = {
       category: 'Plumbing',
+      title: 'Pipe leakage',
       description: 'Main pipe leakage in the master bedroom toilet',
     };
 
@@ -233,6 +234,7 @@ describe('Complaints Management & Status Pipeline API', () => {
     // Verify it is created in DB
     const dbComp = await Complaint.findById(complaintId).setOptions({ unscoped: true });
     expect(dbComp!.category).toBe(payload.category);
+    expect(dbComp!.title).toBe(payload.title);
     expect(dbComp!.status).toBe('Open');
     expect(dbComp!.residentId.toString()).toBe(new mongoose.Types.ObjectId(body.complaint.residentId).toString());
 
