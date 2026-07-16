@@ -118,13 +118,13 @@ export async function POST(req: NextRequest) {
       let receiptNumber = receipt?.receiptNumber;
       if (!receipt) {
         const cleanBillingPeriod = bill.billingPeriod.replace('-', '');
-        const counterDoc = await Counter.findOneAndUpdate(
+        const counterDoc = await (Counter as any).findOneAndUpdate(
           { _id: `receipt-${cleanBillingPeriod}` },
           { $inc: { seq: 1 } },
           { new: true, upsert: true, setDefaultsOnInsert: true }
         ).setOptions({ unscoped: true });
         
-        receiptNumber = `RCP-${cleanBillingPeriod}-${String(counterDoc.seq).padStart(4, '0')}`;
+        receiptNumber = `RCP-${cleanBillingPeriod}-${String((counterDoc as any)?.seq || 1).padStart(4, '0')}`;
   
         receipt = await Receipt.create({
           societyId: payment.societyId,
