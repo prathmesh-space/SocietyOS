@@ -106,3 +106,17 @@ To run individual test files:
 ```bash
 npx jest tests/integration/visitors.test.ts --verbose --no-cache --forceExit
 ```
+
+---
+
+## 6. Future Roadmap
+
+As the platform scales beyond the initial MVP, the following architectural additions are planned:
+
+1. **Multi-Role Accounts & Dynamic Context Switching**
+   * *Problem:* Currently, a single email is unique across the entire user collection, and a user's role is immutable to prevent privilege escalation. However, in real life, a Society Admin or Super Admin may also live in the society as a Resident.
+   * *Proposed Solution:* Refactor the `User` schema to decouple authentication (email/password) from authorization profiles. Users will be able to hold multiple roles (e.g., Admin + Resident) and dynamically switch their active context view from their profile menu, which will trigger a token refresh to update the active JWT scoping.
+2. **Bulk Notice Broadcaster**
+   * Support SMS/WhatsApp integration to broadcast critical notices to residents who might not regularly log in to the web portal.
+3. **Advanced Visitor Analytics**
+   * Visual charts for Society Admins showing peak visitor hours, delivery frequency, and unit-level visitor statistics for security planning.
