@@ -22,7 +22,7 @@ export default function ResidentVisitorsPage() {
 
   useEffect(() => {
     if (qrCodeData?.token) {
-      QRCode.toDataURL(qrCodeData.token, { width: 300, margin: 2, color: { dark: '#1e1b4b', light: '#ffffff' } })
+      QRCode.toDataURL(qrCodeData.token, { width: 300, margin: 2, color: { dark: '#242a22', light: '#ffffff' } })
         .then(url => setQrImageUrl(url))
         .catch(err => console.error('Failed to generate QR code visual', err));
     }
@@ -74,63 +74,63 @@ export default function ResidentVisitorsPage() {
   };
 
   return (
-    <div className="animate-in fade-in duration-500 max-w-2xl mx-auto space-y-6">
+    <div className="animate-in fade-in duration-500 max-w-2xl mx-auto space-y-8 py-8">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Pre-approve Visitor</h1>
-        <p className="text-sm text-slate-500 mt-1">Generate a secure gate pass QR code for your guests.</p>
+        <h1 className="text-4xl font-playfair font-semibold text-forest">Pre-approve Visitor</h1>
+        <p className="text-lg text-forest/70 mt-2">Generate a secure gate pass QR code for your guests.</p>
       </div>
 
       {qrCodeData ? (
-        <Card className="border-indigo-100 bg-indigo-50/30 shadow-sm overflow-hidden text-center">
-          <div className="bg-indigo-600 p-4 text-white">
-            <h3 className="font-bold text-lg">Gate Pass Approved</h3>
-            <p className="text-indigo-100 text-sm">For {qrCodeData.visitorName}</p>
+        <Card variant="full" className="overflow-hidden text-center border-0 shadow-soft-lg">
+          <div className="bg-forest p-6 text-alabaster">
+            <h3 className="font-playfair font-semibold text-2xl tracking-wide">Gate Pass Approved</h3>
+            <p className="text-alabaster/70 text-sm mt-1 uppercase tracking-widest">For {qrCodeData.visitorName}</p>
           </div>
-          <CardContent className="p-6 space-y-6">
-            <div className="bg-white p-4 rounded-xl inline-block shadow-sm border border-slate-200">
+          <CardContent className="p-8 space-y-8 bg-clay-light/20">
+            <div className="bg-white p-6 rounded-3xl inline-block shadow-soft-md border border-stone">
               {qrImageUrl ? (
-                <img src={qrImageUrl} alt="QR Code" className="w-48 h-48 mx-auto" />
+                <img src={qrImageUrl} alt="QR Code" className="w-56 h-56 mx-auto rounded-xl" />
               ) : (
-                <div className="w-48 h-48 mx-auto bg-slate-100 animate-pulse rounded-lg" />
+                <div className="w-56 h-56 mx-auto bg-clay-light animate-pulse rounded-xl" />
               )}
             </div>
             
-            <div className="bg-amber-50 text-amber-800 p-3 rounded-lg text-sm flex items-center justify-center gap-2 font-medium">
-              <Clock className="w-4 h-4" />
+            <div className="bg-sage/10 text-forest p-4 rounded-full text-sm flex items-center justify-center gap-3 font-medium mx-auto max-w-sm">
+              <Clock className="w-5 h-5 text-sage-text" />
               Valid until: {new Date(qrCodeData.validUntil).toLocaleString()}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button onClick={handleDownload} className="gap-2">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button onClick={handleDownload} className="gap-2 w-full sm:w-auto">
                 <Download className="w-4 h-4" /> Download QR
               </Button>
-              <Button variant="outline" onClick={() => setQrCodeData(null)}>
+              <Button variant="outline" onClick={() => setQrCodeData(null)} className="w-full sm:w-auto bg-white">
                 Generate Another
               </Button>
             </div>
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card variant="full">
           <CardHeader>
             <CardTitle>Visitor Details</CardTitle>
             <CardDescription>Fill in the details to generate a one-time entry pass.</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleGenerate} className="space-y-4">
-              <div className="space-y-2">
+            <form onSubmit={handleGenerate} className="space-y-6">
+              <div className="space-y-3">
                 <Label>Visitor Name</Label>
                 <Input required placeholder="e.g. Rahul Sharma" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label>Phone Number (Optional)</Label>
                 <Input type="tel" placeholder="+91..." value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label>Purpose of Visit</Label>
                 <select 
                   required
-                  className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+                  className="flex h-12 w-full rounded-full border border-stone bg-clay-light/30 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage"
                   value={formData.purpose}
                   onChange={(e) => setFormData({...formData, purpose: e.target.value})}
                 >
@@ -142,12 +142,12 @@ export default function ResidentVisitorsPage() {
                   <option value="Other">Other</option>
                 </select>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label>Expected Arrival Date (Optional)</Label>
                 <Input type="date" value={formData.expectedArrival} onChange={(e) => setFormData({...formData, expectedArrival: e.target.value})} />
               </div>
               
-              <Button type="submit" className="w-full" disabled={isGenerating}>
+              <Button type="submit" className="w-full mt-2" disabled={isGenerating}>
                 {isGenerating ? 'Generating Pass...' : 'Generate QR Pass'}
               </Button>
             </form>

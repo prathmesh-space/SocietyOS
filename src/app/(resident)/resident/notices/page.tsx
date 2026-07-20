@@ -37,46 +37,46 @@ export default function ResidentNoticesPage() {
   };
 
   return (
-    <div className="animate-in fade-in duration-500 max-w-4xl mx-auto space-y-6">
+    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-10 py-8">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Notice Board</h1>
-        <p className="text-sm text-slate-500 mt-1">Stay updated with the latest announcements from the society.</p>
+        <h1 className="text-4xl font-playfair font-semibold text-forest">Notice Board</h1>
+        <p className="text-lg text-forest/70 mt-2">Stay updated with the latest announcements from the society.</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-6">
         {isLoading ? (
-          <div className="space-y-4">
-            {[1, 2, 3].map(i => <div key={i} className="h-32 bg-slate-100 animate-pulse rounded-xl" />)}
+          <div className="space-y-6">
+            {[1, 2, 3].map(i => <div key={i} className="h-40 bg-clay-light animate-pulse rounded-3xl" />)}
           </div>
         ) : notices.length === 0 ? (
-          <div className="text-center py-16 bg-white border border-slate-200 rounded-xl shadow-sm">
-            <Megaphone className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900">No active notices</h3>
-            <p className="text-sm text-slate-500 mt-1">You are all caught up!</p>
+          <div className="text-center py-20 bg-white border border-stone rounded-3xl shadow-soft-default">
+            <Megaphone className="w-16 h-16 text-sage/50 mx-auto mb-6" />
+            <h3 className="text-xl font-playfair font-semibold text-forest">No active notices</h3>
+            <p className="text-forest/70 mt-2">You are all caught up!</p>
           </div>
         ) : (
           notices.map(notice => (
-            <Card key={notice._id} className={notice.isImportant ? 'border-red-200 bg-red-50/10 shadow-sm shadow-red-100' : ''}>
-              <CardContent className="p-6 flex flex-col sm:flex-row gap-6">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${notice.isImportant ? 'bg-red-100 text-red-600' : 'bg-indigo-100 text-indigo-600'}`}>
+            <Card key={notice._id} variant="full" className={notice.isImportant ? 'border-terracotta bg-terracotta/5 shadow-soft-md' : ''}>
+              <CardContent className="p-8 flex flex-col sm:flex-row gap-8">
+                <div className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${notice.isImportant ? 'bg-terracotta/10 text-terracotta' : 'bg-sage/20 text-forest'}`}>
                   <Megaphone className="w-6 h-6" />
                 </div>
-                <div className="flex-1 space-y-2">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-lg font-semibold text-slate-900">{notice.title}</h3>
-                      {notice.isImportant && <Badge variant="destructive">Important</Badge>}
+                <div className="flex-1 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <h3 className="text-2xl font-playfair font-semibold text-forest">{notice.title}</h3>
+                      {notice.isImportant && <Badge variant="destructive" className="px-3 py-1 text-xs">Important</Badge>}
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
-                      <Calendar className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-2 text-xs font-medium text-forest/70 bg-clay-light px-3 py-1.5 rounded-full">
+                      <Calendar className="w-4 h-4" />
                       {new Date(notice.createdAt).toLocaleDateString()}
                     </div>
                   </div>
-                  <p className="text-slate-600 whitespace-pre-wrap text-sm leading-relaxed">{notice.body}</p>
+                  <p className="text-forest/80 whitespace-pre-wrap leading-relaxed text-base">{notice.body}</p>
                   
                   {notice.expiryDate && (
-                    <p className="text-xs text-amber-600 pt-2 flex items-center gap-1.5 font-medium">
-                      <Clock className="w-3.5 h-3.5" /> Valid till {new Date(notice.expiryDate).toLocaleDateString()}
+                    <p className="text-sm text-terracotta/80 pt-2 flex items-center gap-2 font-medium">
+                      <Clock className="w-4 h-4" /> Valid till {new Date(notice.expiryDate).toLocaleDateString()}
                     </p>
                   )}
                 </div>

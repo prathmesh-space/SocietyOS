@@ -73,7 +73,7 @@ export default function ResidentPaymentsPage() {
           name: 'Resident', // Can prefill dynamically
         },
         theme: {
-          color: '#4f46e5',
+          color: '#55684D', // Botanical Forest
         },
       };
 
@@ -90,68 +90,68 @@ export default function ResidentPaymentsPage() {
   };
 
   return (
-    <div className="animate-in fade-in duration-500 max-w-4xl mx-auto space-y-6">
+    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-10 py-8">
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Bills & Payments</h1>
-        <p className="text-sm text-slate-500 mt-1">View your monthly maintenance bills and pay online.</p>
+        <h1 className="text-4xl font-playfair font-semibold text-forest">Bills & Payments</h1>
+        <p className="text-lg text-forest/70 mt-2">View your monthly maintenance bills and securely pay online.</p>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-6">
         {isLoading ? (
-          <div className="space-y-4">
-            {[1, 2].map(i => <div key={i} className="h-32 bg-slate-100 animate-pulse rounded-xl" />)}
+          <div className="space-y-6">
+            {[1, 2].map(i => <div key={i} className="h-40 bg-clay-light animate-pulse rounded-3xl" />)}
           </div>
         ) : bills.length === 0 ? (
-          <div className="text-center py-16 bg-white border border-slate-200 rounded-xl shadow-sm">
-            <FileText className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900">No Bills Found</h3>
-            <p className="text-sm text-slate-500 mt-1">You don&apos;t have any maintenance bills yet.</p>
+          <div className="text-center py-20 bg-white border border-stone rounded-3xl shadow-soft-default">
+            <FileText className="w-16 h-16 text-sage/50 mx-auto mb-6" />
+            <h3 className="text-xl font-playfair font-semibold text-forest">No Bills Found</h3>
+            <p className="text-forest/70 mt-2">You don&apos;t have any maintenance bills yet.</p>
           </div>
         ) : (
           bills.map((bill) => (
-            <Card key={bill._id} className={bill.status === 'overdue' ? 'border-red-200 bg-red-50/10' : ''}>
-              <CardContent className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-semibold text-lg text-slate-900">Maintenance: {bill.billingPeriod}</h3>
-                    <Badge variant={bill.status === 'paid' ? 'success' : bill.status === 'overdue' ? 'destructive' : 'warning'}>
+            <Card key={bill._id} variant="full" className={bill.status === 'overdue' ? 'border-terracotta bg-terracotta/5' : ''}>
+              <CardContent className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <h3 className="font-playfair font-semibold text-2xl text-forest">Maintenance: {bill.billingPeriod}</h3>
+                    <Badge variant={bill.status === 'paid' ? 'success' : bill.status === 'overdue' ? 'destructive' : 'warning'} className="px-3 py-1">
                       {bill.status.toUpperCase()}
                     </Badge>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                  <div className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm">
                     <div>
-                      <span className="text-slate-500">Base Amount:</span>
-                      <span className="font-medium ml-2">₹{bill.amount}</span>
+                      <span className="text-forest/70">Base Amount:</span>
+                      <span className="font-medium text-forest ml-2 tracking-wide">₹{bill.amount}</span>
                     </div>
                     <div>
-                      <span className="text-slate-500">Late Fee:</span>
-                      <span className="font-medium text-red-600 ml-2">₹{bill.lateFeeAmount}</span>
+                      <span className="text-forest/70">Late Fee:</span>
+                      <span className="font-medium text-terracotta ml-2 tracking-wide">₹{bill.lateFeeAmount}</span>
                     </div>
                     <div className="col-span-2">
-                      <span className="text-slate-500">Due Date:</span>
-                      <span className={`font-medium ml-2 ${bill.status === 'overdue' ? 'text-red-600' : 'text-slate-900'}`}>
+                      <span className="text-forest/70">Due Date:</span>
+                      <span className={`font-medium ml-2 ${bill.status === 'overdue' ? 'text-terracotta' : 'text-forest'}`}>
                         {new Date(bill.dueDate).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end gap-3 border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6 min-w-[200px]">
+                <div className="flex flex-col items-end gap-4 border-t md:border-t-0 md:border-l border-stone pt-6 md:pt-0 md:pl-8 min-w-[200px]">
                   <div className="text-right">
-                    <p className="text-xs text-slate-500 mb-1">Total Payable</p>
-                    <p className="text-3xl font-bold text-slate-900">₹{bill.amount + bill.lateFeeAmount}</p>
+                    <p className="text-xs text-forest/50 mb-1 uppercase tracking-widest font-semibold">Total Payable</p>
+                    <p className="text-4xl font-playfair font-semibold text-forest">₹{bill.amount + bill.lateFeeAmount}</p>
                   </div>
                   
                   {bill.status === 'paid' ? (
-                    <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-3 py-2 rounded-lg text-sm font-medium">
-                      <CheckCircle2 className="w-4 h-4" /> Paid Successfully
+                    <div className="flex items-center gap-2 text-forest bg-sage/20 px-4 py-2.5 rounded-full text-sm font-medium">
+                      <CheckCircle2 className="w-5 h-5 text-forest" /> Paid Successfully
                     </div>
                   ) : (
                     <Button 
-                      className="w-full gap-2 bg-indigo-600 hover:bg-indigo-700" 
+                      className="w-full gap-2 shadow-soft-md hover:shadow-soft-lg" 
                       onClick={() => handlePay(bill._id)}
                       disabled={isProcessing === bill._id}
                     >

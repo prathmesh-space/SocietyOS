@@ -5,7 +5,7 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto rounded-md border border-slate-200 shadow-sm bg-white">
+  <div className="relative w-full overflow-auto rounded-xl border border-stone shadow-soft-default bg-white">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -19,7 +19,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b bg-slate-50", className)} {...props} />
+  <thead ref={ref} className={cn("[&_tr]:border-b border-stone bg-clay-light", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -41,7 +41,7 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={cn("border-t bg-slate-50 font-medium [&>tr]:last:border-b-0", className)}
+    className={cn("border-t border-stone bg-clay-light font-medium [&>tr]:last:border-b-0", className)}
     {...props}
   />
 ))
@@ -54,7 +54,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b transition-colors hover:bg-slate-50/50 data-[state=selected]:bg-slate-50",
+      "border-b border-stone transition-colors duration-150 hover:bg-clay-light/50 data-[state=selected]:bg-clay-light",
       className
     )}
     {...props}
@@ -69,7 +69,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-10 px-4 text-left align-middle font-medium text-slate-500 [&:has([role=checkbox])]:pr-0",
+      "h-10 px-4 text-left align-middle font-medium text-forest/70 [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}
@@ -95,7 +95,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-4 text-sm text-slate-500", className)}
+    className={cn("mt-4 text-sm text-forest/70", className)}
     {...props}
   />
 ))

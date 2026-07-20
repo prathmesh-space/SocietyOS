@@ -6,15 +6,15 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function Badge({ className, variant = "default", ...props }: BadgeProps) {
-  const baseStyles = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+  const baseStyles = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-sage focus:ring-offset-2 tracking-wide uppercase"
   
   const variants = {
-    default: "border-transparent bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm",
-    secondary: "border-transparent bg-slate-100 text-slate-900 hover:bg-slate-200",
-    destructive: "border-transparent bg-red-500 text-white hover:bg-red-600 shadow-sm",
-    outline: "text-slate-950",
-    success: "border-transparent bg-emerald-500 text-white hover:bg-emerald-600 shadow-sm",
-    warning: "border-transparent bg-amber-500 text-white hover:bg-amber-600 shadow-sm",
+    default: "border-transparent bg-forest text-white shadow-soft-sm",
+    secondary: "border-transparent bg-clay-light text-forest",
+    destructive: "border-transparent bg-terracotta text-white shadow-soft-sm",
+    outline: "text-forest border-stone",
+    success: "border-transparent bg-sage text-white shadow-soft-sm",
+    warning: "border-transparent bg-[#D99A5A] text-white shadow-soft-sm", // using a muted amber/gold
   }
 
   return (

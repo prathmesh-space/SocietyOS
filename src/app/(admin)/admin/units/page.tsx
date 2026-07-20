@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Home, Upload } from 'lucide-react';
+import { Plus, Home, Upload, Copy } from 'lucide-react';
 
 interface Resident {
   _id: string;
@@ -98,20 +98,20 @@ export default function AdminUnitsPage() {
     <div className="animate-in fade-in duration-500 max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Units Directory</h1>
-          <p className="text-sm text-slate-500 mt-1">Manage all flats/apartments in your society.</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-forest mb-1">Units Directory</h1>
+          <p className="text-sm text-forest/70 font-medium">Manage all flats/apartments in your society.</p>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Mock Bulk Import */}
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" expression="compact" className="gap-2 border-stone text-forest hover:bg-clay-light">
             <Upload className="w-4 h-4" />
             Bulk Import
           </Button>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="gap-2">
+              <Button expression="compact" className="gap-2">
                 <Plus className="w-4 h-4" />
                 Add Unit
               </Button>
@@ -125,33 +125,33 @@ export default function AdminUnitsPage() {
               </DialogHeader>
 
               <form onSubmit={handleCreateUnit} className="space-y-4 py-4">
-                {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">{error}</div>}
+                {error && <div className="p-3 bg-terracotta/10 text-terracotta text-sm rounded-md border border-terracotta/20">{error}</div>}
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="unitNumber">Unit Number</Label>
-                    <Input id="unitNumber" required placeholder="e.g. 101" value={formData.unitNumber} onChange={(e) => setFormData({...formData, unitNumber: e.target.value})} />
+                    <Input id="unitNumber" required placeholder="e.g. 101" value={formData.unitNumber} onChange={(e) => setFormData({...formData, unitNumber: e.target.value})} className="h-9 rounded-md" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="block">Block/Tower</Label>
-                    <Input id="block" required placeholder="e.g. A" value={formData.block} onChange={(e) => setFormData({...formData, block: e.target.value})} />
+                    <Input id="block" required placeholder="e.g. A" value={formData.block} onChange={(e) => setFormData({...formData, block: e.target.value})} className="h-9 rounded-md" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="floor">Floor</Label>
-                    <Input id="floor" type="number" required value={formData.floor} onChange={(e) => setFormData({...formData, floor: Number(e.target.value)})} />
+                    <Input id="floor" type="number" required value={formData.floor} onChange={(e) => setFormData({...formData, floor: Number(e.target.value)})} className="h-9 rounded-md" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="type">Configuration</Label>
-                    <Input id="type" required placeholder="e.g. 2BHK" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} />
+                    <Input id="type" required placeholder="e.g. 2BHK" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} className="h-9 rounded-md" />
                   </div>
                   <div className="col-span-2 space-y-2">
                     <Label htmlFor="squareFeet">Size (Sq. Ft.)</Label>
-                    <Input id="squareFeet" type="number" required value={formData.squareFeet} onChange={(e) => setFormData({...formData, squareFeet: Number(e.target.value)})} />
+                    <Input id="squareFeet" type="number" required value={formData.squareFeet} onChange={(e) => setFormData({...formData, squareFeet: Number(e.target.value)})} className="h-9 rounded-md" />
                   </div>
                 </div>
 
                 <DialogFooter className="pt-4">
-                  <Button type="submit" disabled={isSubmitting}>
+                  <Button type="submit" expression="compact" disabled={isSubmitting}>
                     {isSubmitting ? 'Creating...' : 'Create Unit'}
                   </Button>
                 </DialogFooter>
@@ -161,8 +161,8 @@ export default function AdminUnitsPage() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader className="pb-4 flex flex-row items-center justify-between">
+      <Card variant="compact">
+        <CardHeader className="pb-4 flex flex-row items-center justify-between border-b border-stone">
           <div>
             <CardTitle>All Units</CardTitle>
             <CardDescription>A complete list of registered units.</CardDescription>
@@ -172,43 +172,43 @@ export default function AdminUnitsPage() {
               placeholder="Search by unit number..." 
               value={search} 
               onChange={(e) => setSearch(e.target.value)}
-              className="h-9"
+              className="h-9 rounded-md border-stone"
             />
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {isLoading ? (
-            <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-12 bg-slate-100 animate-pulse rounded-md" />)}
+            <div className="space-y-4 p-4">
+              {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-12 bg-clay-light animate-pulse rounded-md" />)}
             </div>
           ) : units.length === 0 ? (
-            <div className="text-center py-12">
-              <Home className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-900">No units found</h3>
-              <p className="text-sm text-slate-500 mt-1">Add units to your society to get started.</p>
+            <div className="text-center py-16">
+              <Home className="w-12 h-12 text-forest/20 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-forest">No units found</h3>
+              <p className="text-sm text-forest/50 mt-1">Add units to your society to get started.</p>
             </div>
           ) : (
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Unit</TableHead>
-                  <TableHead>Configuration</TableHead>
-                  <TableHead>Size</TableHead>
-                  <TableHead>Occupancy Status</TableHead>
-                  <TableHead>Primary Resident</TableHead>
+              <TableHeader className="bg-clay-light/30">
+                <TableRow className="border-stone hover:bg-transparent">
+                  <TableHead className="text-forest font-semibold">Unit</TableHead>
+                  <TableHead className="text-forest font-semibold">Configuration</TableHead>
+                  <TableHead className="text-forest font-semibold">Size</TableHead>
+                  <TableHead className="text-forest font-semibold">Occupancy Status</TableHead>
+                  <TableHead className="text-forest font-semibold">Primary Resident</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {units.map((unit) => (
-                  <TableRow key={unit._id}>
+                  <TableRow key={unit._id} className="border-stone hover:bg-clay-light/20">
                     <TableCell className="font-medium">
                       <div className="flex flex-col gap-1">
-                        <span>{unit.block}-{unit.unitNumber}</span>
+                        <span className="text-forest font-semibold">{unit.block}-{unit.unitNumber}</span>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-slate-500 font-normal">Floor {unit.floor}</span>
-                          <span className="text-xs text-slate-300 font-normal">•</span>
+                          <span className="text-xs text-forest/60 font-medium">Floor {unit.floor}</span>
+                          <span className="text-xs text-forest/30">•</span>
                           <span 
-                            className="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer hover:bg-slate-200 transition-colors border border-slate-200"
+                            className="text-[10px] font-mono text-forest/60 bg-alabaster px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer hover:bg-clay-light transition-colors border border-stone"
                             onClick={() => {
                               navigator.clipboard.writeText(unit.id || unit._id);
                               alert('Unit ID copied to clipboard!');
@@ -216,28 +216,26 @@ export default function AdminUnitsPage() {
                             title="Click to copy Unit ID"
                           >
                             ID: {unit.id || unit._id}
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
+                            <Copy className="w-3 h-3" />
                           </span>
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>{unit.type}</TableCell>
-                    <TableCell>{unit.squareFeet} sq.ft</TableCell>
+                    <TableCell className="text-forest/80 text-sm">{unit.type}</TableCell>
+                    <TableCell className="text-forest/80 text-sm">{unit.squareFeet} sq.ft</TableCell>
                     <TableCell>
-                      <Badge variant={unit.primaryResidentId ? 'success' : 'secondary'}>
+                      <Badge variant={unit.primaryResidentId ? 'success' : 'secondary'} className="rounded-sm text-xs font-semibold px-2 py-0.5">
                         {unit.primaryResidentId ? 'Occupied' : 'Vacant'}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       {unit.primaryResidentId ? (
                         <div>
-                          <p className="text-sm font-medium">{unit.primaryResidentId.name}</p>
-                          <p className="text-xs text-slate-500">{unit.primaryResidentId.phone || unit.primaryResidentId.email}</p>
+                          <p className="text-sm font-semibold text-forest">{unit.primaryResidentId.name}</p>
+                          <p className="text-xs text-forest/60">{unit.primaryResidentId.phone || unit.primaryResidentId.email}</p>
                         </div>
                       ) : (
-                        <span className="text-sm text-slate-400">—</span>
+                        <span className="text-sm text-forest/40">—</span>
                       )}
                     </TableCell>
                   </TableRow>

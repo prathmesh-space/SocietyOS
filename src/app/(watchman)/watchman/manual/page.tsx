@@ -54,28 +54,28 @@ export default function WatchmanManualEntryPage() {
   return (
     <div className="animate-in fade-in p-4 space-y-4">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Manual Entry</h1>
-        <p className="text-sm text-slate-500">Log walk-in visitors without a QR pass.</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-forest mb-1">Manual Entry</h1>
+        <p className="text-sm text-forest/70 font-medium">Log walk-in visitors without a QR pass.</p>
       </div>
 
-      <Card>
+      <Card variant="compact" className="border-stone bg-clay-light/20">
         <CardContent className="p-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
               <Label>Visitor Name</Label>
-              <Input required placeholder="Enter full name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+              <Input required placeholder="Enter full name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="h-9 rounded-md border-stone" />
             </div>
             
             <div className="space-y-1.5">
               <Label>Phone Number</Label>
-              <Input type="tel" required placeholder="10-digit number" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+              <Input type="tel" required placeholder="10-digit number" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="h-9 rounded-md border-stone" />
             </div>
 
             <div className="space-y-1.5">
               <Label>Purpose</Label>
               <select 
                 required
-                className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+                className="flex h-9 w-full rounded-md border border-stone bg-white px-3 py-1.5 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-forest"
                 value={formData.purpose}
                 onChange={(e) => setFormData({...formData, purpose: e.target.value})}
               >
@@ -90,15 +90,15 @@ export default function WatchmanManualEntryPage() {
             <div className="grid grid-cols-2 gap-3 pt-2">
               <div className="space-y-1.5">
                 <Label>Block</Label>
-                <Input required placeholder="e.g. A" value={formData.block} onChange={(e) => setFormData({...formData, block: e.target.value})} />
+                <Input required placeholder="e.g. A" value={formData.block} onChange={(e) => setFormData({...formData, block: e.target.value})} className="h-9 rounded-md border-stone" />
               </div>
               <div className="space-y-1.5">
                 <Label>Unit Number</Label>
-                <Input required placeholder="e.g. 101" value={formData.unitNumber} onChange={(e) => setFormData({...formData, unitNumber: e.target.value})} />
+                <Input required placeholder="e.g. 101" value={formData.unitNumber} onChange={(e) => setFormData({...formData, unitNumber: e.target.value})} className="h-9 rounded-md border-stone" />
               </div>
             </div>
 
-            <Button type="submit" className="w-full mt-4" size="lg" disabled={isSubmitting}>
+            <Button expression="compact" type="submit" className="w-full mt-4" size="lg" disabled={isSubmitting}>
               {isSubmitting ? 'Recording...' : 'Allow Entry'}
             </Button>
           </form>

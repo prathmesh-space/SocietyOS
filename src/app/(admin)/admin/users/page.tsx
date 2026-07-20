@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Users, CheckCircle2, XCircle } from 'lucide-react';
 
 interface Unit {
@@ -78,81 +77,81 @@ export default function AdminUsersPage() {
     <div className="animate-in fade-in duration-500 max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">User Management</h1>
-          <p className="text-sm text-slate-500 mt-1">Manage residents, watchmen, and their access.</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-forest mb-1">User Management</h1>
+          <p className="text-sm text-forest/70 font-medium">Manage residents, watchmen, and their access.</p>
         </div>
 
-        <div className="flex bg-slate-100 p-1 rounded-lg">
+        <div className="flex bg-clay-light/50 p-1 rounded-lg border border-stone">
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'all' ? 'bg-white text-forest shadow-sm' : 'text-forest/60 hover:text-forest'}`}
           >
             All
           </button>
           <button
             onClick={() => setFilter('pending')}
-            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'pending' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'pending' ? 'bg-white text-terracotta shadow-sm' : 'text-forest/60 hover:text-forest'}`}
           >
             Pending
           </button>
           <button
             onClick={() => setFilter('active')}
-            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'active' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'active' ? 'bg-white text-forest shadow-sm' : 'text-forest/60 hover:text-forest'}`}
           >
             Active
           </button>
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
+      <Card variant="compact">
+        <CardHeader className="pb-4 border-b border-stone">
           <CardTitle>Directory</CardTitle>
           <CardDescription>All registered users in your society.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {isLoading ? (
-            <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-12 bg-slate-100 animate-pulse rounded-md" />)}
+            <div className="space-y-4 p-4">
+              {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-12 bg-clay-light animate-pulse rounded-md" />)}
             </div>
           ) : users.length === 0 ? (
-            <div className="text-center py-12">
-              <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-slate-900">No users found</h3>
-              <p className="text-sm text-slate-500 mt-1">Try changing the filter or invite residents.</p>
+            <div className="text-center py-16">
+              <Users className="w-12 h-12 text-forest/20 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-forest">No users found</h3>
+              <p className="text-sm text-forest/50 mt-1">Try changing the filter or invite residents.</p>
             </div>
           ) : (
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Role / Unit</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+              <TableHeader className="bg-clay-light/30">
+                <TableRow className="border-stone hover:bg-transparent">
+                  <TableHead className="text-forest font-semibold">Name</TableHead>
+                  <TableHead className="text-forest font-semibold">Contact</TableHead>
+                  <TableHead className="text-forest font-semibold">Role / Unit</TableHead>
+                  <TableHead className="text-forest font-semibold">Status</TableHead>
+                  <TableHead className="text-right text-forest font-semibold">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {users.map((u) => (
-                  <TableRow key={u._id}>
-                    <TableCell className="font-medium">{u.name}</TableCell>
+                  <TableRow key={u._id} className="border-stone hover:bg-clay-light/20">
+                    <TableCell className="font-semibold text-forest">{u.name}</TableCell>
                     <TableCell>
-                      <div className="text-sm">{u.email}</div>
-                      <div className="text-xs text-slate-500">{u.phone}</div>
+                      <div className="text-sm text-forest/80">{u.email}</div>
+                      <div className="text-xs text-forest/50">{u.phone}</div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <Badge variant={u.role === 'admin' ? 'default' : u.role === 'watchman' ? 'outline' : 'secondary'}>
+                        <Badge variant={u.role === 'admin' ? 'default' : u.role === 'watchman' ? 'outline' : 'secondary'} className="rounded-sm text-xs px-2 py-0.5">
                           {u.role.charAt(0).toUpperCase() + u.role.slice(1)}
                         </Badge>
                         {u.unitId && (
-                          <span className="text-sm text-slate-600 font-medium">
+                          <span className="text-sm text-forest font-medium">
                             {u.unitId.block}-{u.unitId.unitNumber}
                           </span>
                         )}
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={u.status === 'active' ? 'success' : u.status === 'pending' ? 'warning' : 'destructive'}>
+                      <Badge variant={u.status === 'active' ? 'success' : u.status === 'pending' ? 'warning' : 'destructive'} className="rounded-sm text-xs px-2 py-0.5 font-semibold">
                         {u.status.charAt(0).toUpperCase() + u.status.slice(1)}
                       </Badge>
                     </TableCell>
@@ -160,17 +159,19 @@ export default function AdminUsersPage() {
                       {u.status === 'pending' && u.role === 'resident' && (
                         <div className="flex justify-end gap-2">
                           <Button 
+                            expression="compact"
                             size="sm" 
                             variant="outline" 
-                            className="text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200"
+                            className="text-terracotta hover:bg-terracotta/10 hover:text-terracotta border-terracotta/30"
                             onClick={() => handleApproval(u._id, false)}
                             disabled={isProcessing === u._id}
                           >
                             <XCircle className="w-4 h-4 mr-1" /> Reject
                           </Button>
                           <Button 
+                            expression="compact"
                             size="sm" 
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                            className="bg-forest hover:bg-forest/90 text-alabaster"
                             onClick={() => handleApproval(u._id, true)}
                             disabled={isProcessing === u._id}
                           >

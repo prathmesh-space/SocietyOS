@@ -102,8 +102,8 @@ export default function AdminSettingsPage() {
   if (isLoading || !settings) {
     return (
       <div className="max-w-4xl mx-auto space-y-6 animate-pulse">
-        <div className="h-8 w-32 bg-slate-200 rounded"></div>
-        <div className="h-64 bg-slate-200 rounded-xl"></div>
+        <div className="h-8 w-32 bg-clay-light rounded-md"></div>
+        <div className="h-64 bg-clay-light rounded-xl"></div>
       </div>
     );
   }
@@ -112,10 +112,10 @@ export default function AdminSettingsPage() {
     <div className="animate-in fade-in duration-500 max-w-4xl mx-auto space-y-6 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Society Settings</h1>
-          <p className="text-sm text-slate-500 mt-1">Configure global parameters and emergency contacts.</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-forest mb-1">Society Settings</h1>
+          <p className="text-sm text-forest/70 font-medium">Configure global parameters and emergency contacts.</p>
         </div>
-        <Button onClick={handleSave} disabled={isSaving} className="gap-2">
+        <Button expression="compact" onClick={handleSave} disabled={isSaving} className="gap-2">
           <Settings className="w-4 h-4" />
           {isSaving ? 'Saving...' : 'Save Changes'}
         </Button>
@@ -123,21 +123,22 @@ export default function AdminSettingsPage() {
 
       <div className="grid gap-6">
         {/* Read Only Info */}
-        <Card className="bg-slate-50/50">
-          <CardHeader>
+        <Card variant="compact" className="bg-clay-light/30 border-stone">
+          <CardHeader className="border-b border-stone pb-4">
             <CardTitle className="text-lg">General Information</CardTitle>
             <CardDescription>Basic details managed by Super Admin.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="grid grid-cols-2 gap-4 opacity-70 pointer-events-none">
               <div>
                 <Label>Society ID</Label>
                 <div className="flex gap-2">
-                  <Input value={settings.id} readOnly className="font-mono text-sm" />
+                  <Input value={settings.id} readOnly className="font-mono text-sm h-9 rounded-md border-stone" />
                   <Button 
+                    expression="compact"
                     variant="outline" 
                     size="icon" 
-                    className="pointer-events-auto shrink-0"
+                    className="pointer-events-auto shrink-0 border-stone hover:bg-clay-light text-forest"
                     onClick={() => {
                       navigator.clipboard.writeText(settings.id);
                       alert('Society ID copied to clipboard!');
@@ -152,39 +153,40 @@ export default function AdminSettingsPage() {
               </div>
               <div>
                 <Label>Society Name</Label>
-                <Input value={settings.name} readOnly />
+                <Input value={settings.name} readOnly className="h-9 rounded-md border-stone" />
               </div>
               <div className="col-span-2">
                 <Label>Location</Label>
-                <Input value={`${settings.city}, ${settings.state} - ${settings.pincode}`} readOnly />
+                <Input value={`${settings.city}, ${settings.state} - ${settings.pincode}`} readOnly className="h-9 rounded-md border-stone" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Billing Settings */}
-        <Card>
-          <CardHeader>
+        <Card variant="compact">
+          <CardHeader className="border-b border-stone pb-4">
             <CardTitle className="text-lg">Billing & Fees</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 pt-6">
             <div className="space-y-2">
               <Label>Default Maintenance Amount (₹)</Label>
               <Input 
                 type="number" 
                 value={formData.defaultBillAmount} 
                 onChange={(e) => setFormData({ ...formData, defaultBillAmount: Number(e.target.value) })}
+                className="h-9 rounded-md border-stone w-1/3"
               />
             </div>
             
-            <div className="grid grid-cols-3 gap-4 p-4 border border-slate-200 rounded-lg bg-slate-50">
-              <div className="col-span-3 pb-2 border-b border-slate-200 mb-2">
-                <h4 className="font-semibold text-sm">Late Fee Rules</h4>
+            <div className="grid grid-cols-3 gap-4 p-4 border border-stone rounded-md bg-clay-light/20">
+              <div className="col-span-3 pb-2 border-b border-stone mb-2">
+                <h4 className="font-semibold text-sm text-forest">Late Fee Rules</h4>
               </div>
               <div className="space-y-2">
                 <Label>Type</Label>
                 <select 
-                  className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+                  className="flex h-9 w-full rounded-md border border-stone bg-white px-3 py-1.5 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-forest"
                   value={formData.lateFeeRule?.type}
                   onChange={(e) => setFormData({ ...formData, lateFeeRule: { ...formData.lateFeeRule!, type: e.target.value as any } })}
                 >
@@ -198,6 +200,7 @@ export default function AdminSettingsPage() {
                   type="number" 
                   value={formData.lateFeeRule?.value} 
                   onChange={(e) => setFormData({ ...formData, lateFeeRule: { ...formData.lateFeeRule!, value: Number(e.target.value) } })}
+                  className="h-9 rounded-md border-stone"
                 />
               </div>
               <div className="space-y-2">
@@ -206,6 +209,7 @@ export default function AdminSettingsPage() {
                   type="number" 
                   value={formData.lateFeeRule?.gracePeriodDays} 
                   onChange={(e) => setFormData({ ...formData, lateFeeRule: { ...formData.lateFeeRule!, gracePeriodDays: Number(e.target.value) } })}
+                  className="h-9 rounded-md border-stone"
                 />
               </div>
             </div>
@@ -213,26 +217,27 @@ export default function AdminSettingsPage() {
         </Card>
 
         {/* Emergency Contacts */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card variant="compact">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-stone pb-4">
             <div>
               <CardTitle className="text-lg">Emergency Contacts</CardTitle>
               <CardDescription>Visible to all residents. At least 1 is required for society activation.</CardDescription>
             </div>
-            <Button variant="outline" size="sm" onClick={addEmergencyContact} className="gap-2">
+            <Button expression="compact" variant="outline" size="sm" onClick={addEmergencyContact} className="gap-2 border-stone text-forest hover:bg-clay-light">
               <Plus className="w-4 h-4" /> Add Contact
             </Button>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="space-y-4">
               {formData.emergencyContacts?.map((contact, index) => (
-                <div key={index} className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <div key={index} className="flex items-center gap-4 p-4 bg-white border border-stone rounded-md shadow-sm">
                   <div className="flex-1 space-y-2">
                     <Label>Name</Label>
                     <Input 
                       placeholder="e.g. Main Gate Security" 
                       value={contact.name} 
                       onChange={(e) => updateEmergencyContact(index, 'name', e.target.value)}
+                      className="h-9 rounded-md border-stone"
                     />
                   </div>
                   <div className="flex-1 space-y-2">
@@ -241,6 +246,7 @@ export default function AdminSettingsPage() {
                       placeholder="e.g. Security" 
                       value={contact.role} 
                       onChange={(e) => updateEmergencyContact(index, 'role', e.target.value)}
+                      className="h-9 rounded-md border-stone"
                     />
                   </div>
                   <div className="flex-1 space-y-2">
@@ -249,19 +255,20 @@ export default function AdminSettingsPage() {
                       placeholder="+91..." 
                       value={contact.phone} 
                       onChange={(e) => updateEmergencyContact(index, 'phone', e.target.value)}
+                      className="h-9 rounded-md border-stone"
                     />
                   </div>
                   <div className="pt-6">
-                    <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => removeEmergencyContact(index)}>
+                    <Button expression="compact" variant="ghost" size="icon" className="text-terracotta hover:text-terracotta/80 hover:bg-terracotta/10 rounded-md" onClick={() => removeEmergencyContact(index)}>
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
               ))}
               {formData.emergencyContacts?.length === 0 && (
-                <div className="text-center py-6 text-slate-500 bg-slate-50 rounded-lg border border-dashed border-slate-200">
+                <div className="text-center py-6 text-forest/50 bg-clay-light/30 rounded-md border border-dashed border-stone">
                   <Phone className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">No emergency contacts configured.</p>
+                  <p className="text-sm font-medium">No emergency contacts configured.</p>
                 </div>
               )}
             </div>

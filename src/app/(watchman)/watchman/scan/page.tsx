@@ -66,42 +66,42 @@ export default function WatchmanScanPage() {
   return (
     <div className="animate-in fade-in p-4 h-full flex flex-col">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Scan Pass</h1>
-        <p className="text-slate-500 text-sm">Scan resident-approved QR codes for quick entry.</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-forest mb-1">Scan Pass</h1>
+        <p className="text-forest/70 font-medium text-sm">Scan resident-approved QR codes for quick entry.</p>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center">
         {!scanResult ? (
           <div className="w-full max-w-sm">
-            <div className="bg-white p-2 rounded-2xl shadow-sm border border-slate-200 overflow-hidden relative">
-              <div id="reader" className="w-full rounded-xl overflow-hidden [&>div]:border-none [&>div>video]:rounded-xl"></div>
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-stone overflow-hidden relative">
+              <div id="reader" className="w-full rounded-md overflow-hidden [&>div]:border-none [&>div>video]:rounded-md text-forest"></div>
               {/* Add a scanning overlay animation here if desired */}
             </div>
           </div>
         ) : (
-          <Card className={`w-full max-w-sm border-2 ${response?.success ? 'border-emerald-500 bg-emerald-50/50' : 'border-red-500 bg-red-50/50'}`}>
+          <Card variant="compact" className={`w-full max-w-sm border ${response?.success ? 'border-sage/50 bg-sage/10' : 'border-terracotta/50 bg-terracotta/5'}`}>
             <CardContent className="p-8 text-center space-y-4">
               {isProcessing ? (
                 <div className="py-8">
-                  <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="font-semibold text-slate-700">Verifying Pass...</p>
+                  <div className="w-12 h-12 border-4 border-forest border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="font-semibold text-forest/70">Verifying Pass...</p>
                 </div>
               ) : response?.success ? (
                 <div className="animate-in zoom-in duration-300">
-                  <CheckCircle2 className="w-20 h-20 text-emerald-500 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-emerald-700 mb-1">Access Granted</h2>
-                  <p className="text-emerald-600 font-medium">{response.visitorName}</p>
+                  <CheckCircle2 className="w-20 h-20 text-sage-text mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold text-sage-text mb-1">Access Granted</h2>
+                  <p className="text-forest font-medium">{response.visitorName}</p>
                 </div>
               ) : (
                 <div className="animate-in shake duration-300">
-                  <AlertCircle className="w-20 h-20 text-red-500 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-red-700 mb-1">Access Denied</h2>
-                  <p className="text-red-600 font-medium">{response?.message}</p>
+                  <AlertCircle className="w-20 h-20 text-terracotta mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold text-terracotta mb-1">Access Denied</h2>
+                  <p className="text-terracotta/80 font-medium">{response?.message}</p>
                 </div>
               )}
 
               {!isProcessing && (
-                <Button className="w-full mt-6" onClick={resetScanner}>
+                <Button expression="compact" className="w-full mt-6" onClick={resetScanner}>
                   Scan Next Visitor
                 </Button>
               )}

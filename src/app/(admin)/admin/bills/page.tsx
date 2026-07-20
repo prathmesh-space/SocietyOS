@@ -90,14 +90,14 @@ export default function AdminBillsPage() {
     <div className="animate-in fade-in duration-500 max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Billing & Payments</h1>
-          <p className="text-sm text-slate-500 mt-1">Generate maintenance bills and track payments.</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-forest mb-1">Billing & Payments</h1>
+          <p className="text-sm text-forest/70 font-medium">Generate maintenance bills and track payments.</p>
         </div>
 
         <Dialog open={isGenerateOpen} onOpenChange={setIsGenerateOpen}>
           <DialogTrigger asChild>
-            <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
-              <Play className="w-4 h-4 fill-white" />
+            <Button expression="compact" className="gap-2 bg-forest hover:bg-forest/90 text-alabaster">
+              <Play className="w-4 h-4 fill-current" />
               Generate Bills
             </Button>
           </DialogTrigger>
@@ -113,22 +113,22 @@ export default function AdminBillsPage() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label>Billing Month</Label>
-                  <Input type="month" required value={formData.month} onChange={(e) => setFormData({...formData, month: e.target.value})} />
+                  <Input type="month" required value={formData.month} onChange={(e) => setFormData({...formData, month: e.target.value})} className="h-9 rounded-md" />
                 </div>
                 <div className="space-y-2">
                   <Label>Due Date</Label>
-                  <Input type="date" required value={formData.dueDate} onChange={(e) => setFormData({...formData, dueDate: e.target.value})} />
+                  <Input type="date" required value={formData.dueDate} onChange={(e) => setFormData({...formData, dueDate: e.target.value})} className="h-9 rounded-md" />
                 </div>
-                <div className="p-4 bg-amber-50 border border-amber-100 rounded-lg text-sm text-amber-800">
-                  <p className="font-medium mb-1">Base amount is determined by:</p>
-                  <ul className="list-disc list-inside space-y-1">
+                <div className="p-4 bg-sage/10 border border-sage-text/20 rounded-md text-sm text-forest">
+                  <p className="font-semibold mb-1 text-sage-text">Base amount is determined by:</p>
+                  <ul className="list-disc list-inside space-y-1 text-forest/80">
                     <li>Unit-specific flat rate (if configured)</li>
                     <li>Society default amount</li>
                   </ul>
                 </div>
               </div>
               <DialogFooter className="pt-4">
-                <Button type="submit" disabled={isGenerating}>
+                <Button type="submit" expression="compact" disabled={isGenerating}>
                   {isGenerating ? 'Generating...' : 'Confirm Generation'}
                 </Button>
               </DialogFooter>
@@ -139,46 +139,46 @@ export default function AdminBillsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="md:col-span-4">
-          <Card>
-            <CardHeader>
+          <Card variant="compact">
+            <CardHeader className="pb-4 border-b border-stone">
               <CardTitle>Recent Bills</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               {isLoading ? (
-                <div className="space-y-4">
-                  {[1, 2, 3, 4].map(i => <div key={i} className="h-12 bg-slate-100 animate-pulse rounded-md" />)}
+                <div className="space-y-4 p-4">
+                  {[1, 2, 3, 4].map(i => <div key={i} className="h-12 bg-clay-light animate-pulse rounded-md" />)}
                 </div>
               ) : bills.length === 0 ? (
-                <div className="text-center py-12">
-                  <FileCheck2 className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-slate-900">No bills generated yet</h3>
-                  <p className="text-sm text-slate-500 mt-1">Click the button above to generate this month&apos;s bills.</p>
+                <div className="text-center py-16">
+                  <FileCheck2 className="w-12 h-12 text-forest/20 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-forest">No bills generated yet</h3>
+                  <p className="text-sm text-forest/50 mt-1">Click the button above to generate this month&apos;s bills.</p>
                 </div>
               ) : (
                 <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Unit</TableHead>
-                      <TableHead>Month</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Due Date</TableHead>
-                      <TableHead>Status</TableHead>
+                  <TableHeader className="bg-clay-light/30">
+                    <TableRow className="border-stone hover:bg-transparent">
+                      <TableHead className="text-forest font-semibold">Unit</TableHead>
+                      <TableHead className="text-forest font-semibold">Month</TableHead>
+                      <TableHead className="text-forest font-semibold">Amount</TableHead>
+                      <TableHead className="text-forest font-semibold">Due Date</TableHead>
+                      <TableHead className="text-forest font-semibold">Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {bills.map((b) => (
-                      <TableRow key={b._id}>
-                        <TableCell className="font-medium">
+                      <TableRow key={b._id} className="border-stone hover:bg-clay-light/20">
+                        <TableCell className="font-semibold text-forest">
                           {b.unitId?.block}-{b.unitId?.unitNumber}
                         </TableCell>
-                        <TableCell>{b.billingPeriod}</TableCell>
+                        <TableCell className="text-forest/80">{b.billingPeriod}</TableCell>
                         <TableCell>
-                          <div>₹{b.amount}</div>
-                          {b.lateFeeAmount > 0 && <div className="text-xs text-red-500">+₹{b.lateFeeAmount} late fee</div>}
+                          <div className="font-medium text-forest">₹{b.amount}</div>
+                          {b.lateFeeAmount > 0 && <div className="text-xs text-terracotta mt-0.5">+₹{b.lateFeeAmount} late fee</div>}
                         </TableCell>
-                        <TableCell>{new Date(b.dueDate).toLocaleDateString()}</TableCell>
+                        <TableCell className="text-forest/80">{new Date(b.dueDate).toLocaleDateString()}</TableCell>
                         <TableCell>
-                          <Badge variant={b.status.toLowerCase() === 'paid' ? 'success' : b.status.toLowerCase() === 'overdue' ? 'destructive' : 'warning'}>
+                          <Badge variant={b.status.toLowerCase() === 'paid' ? 'success' : b.status.toLowerCase() === 'overdue' ? 'destructive' : 'warning'} className="rounded-sm text-xs font-semibold px-2 py-0.5">
                             {b.status.toUpperCase()}
                           </Badge>
                         </TableCell>

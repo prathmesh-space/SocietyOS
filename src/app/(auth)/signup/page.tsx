@@ -4,6 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/components/auth/AuthProvider';
 
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
 export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -58,118 +63,116 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="relative min-h-screen flex items-center justify-center px-4">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-[10%] left-[20%] w-[400px] h-[400px] rounded-full bg-brand-600/10 blur-[128px]" />
-        </div>
-        <div className="relative z-10 w-full max-w-md text-center animate-scale-in">
-          <div className="glass-card p-8">
-            <div className="w-16 h-16 rounded-full bg-accent-emerald/20 flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-accent-emerald" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold mb-2">Registration Submitted!</h2>
-            <p className="text-[var(--text-secondary)] mb-6">
-              Your account is pending approval by your society admin.
-              You&apos;ll be able to log in once approved.
-            </p>
-            <Link href="/login" className="btn-brand">
-              Go to Login
-            </Link>
-          </div>
+      <div className="relative min-h-screen flex items-center justify-center px-4 bg-alabaster text-forest font-sans selection:bg-clay-light">
+        <div className="relative z-10 w-full max-w-md text-center animate-in zoom-in-95 duration-500">
+          <Card variant="full" className="bg-white/80 backdrop-blur-sm border-stone/50 shadow-soft-md">
+            <CardContent className="p-8">
+              <div className="w-16 h-16 rounded-full bg-sage/10 flex items-center justify-center mx-auto mb-6 shadow-sm border border-stone">
+                <svg className="w-8 h-8 text-sage-text" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-playfair font-bold text-forest mb-2">Registration Submitted!</h2>
+              <p className="text-forest/70 font-medium mb-8">
+                Your account is pending approval by your society admin.
+                You&apos;ll be able to log in once approved.
+              </p>
+              <Link href="/login" className="w-full">
+                <Button expression="full" className="w-full h-12 text-[15px]">
+                  Go to Login
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-brand-600/10 blur-[128px] animate-pulse-soft" />
-        <div className="absolute bottom-[10%] left-[20%] w-[300px] h-[300px] rounded-full bg-brand-400/10 blur-[100px]" />
-      </div>
-
-      <div className="relative z-10 w-full max-w-md animate-scale-in">
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-12 bg-alabaster text-forest font-sans selection:bg-clay-light">
+      <div className="relative z-10 w-full max-w-md animate-in fade-in duration-500 slide-in-from-bottom-4">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'var(--brand-gradient)' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-forest text-alabaster transition-transform duration-300 group-hover:scale-105 shadow-soft-default">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                 <polyline points="9 22 9 12 15 12 15 22" />
               </svg>
             </div>
-            <span className="text-2xl font-bold gradient-text">SocietyOS</span>
+            <span className="text-2xl font-playfair font-bold text-forest">SocietyOS</span>
           </Link>
-          <h1 className="text-2xl font-bold mb-2">Resident Registration</h1>
-          <p className="text-[var(--text-secondary)]">
+          <h1 className="text-3xl font-playfair font-bold mb-2">Resident Registration</h1>
+          <p className="text-forest/70 font-medium">
             Create your account to get started
           </p>
         </div>
 
-        <div className="glass-card p-8">
-          <form onSubmit={handleSubmit} className="space-y-4" id="signup-form">
-            {error && (
-              <div className="rounded-xl bg-rose-500/10 border border-rose-500/20 px-4 py-3 text-sm text-rose-400 animate-slide-down">
-                {error}
+        <Card variant="full" className="bg-white/80 backdrop-blur-sm border-stone/50 shadow-soft-md">
+          <CardContent className="p-8 pt-8">
+            <form onSubmit={handleSubmit} className="space-y-4" id="signup-form">
+              {error && (
+                <div className="rounded-xl bg-terracotta/10 border border-terracotta/20 px-4 py-3 text-sm text-terracotta font-medium animate-in slide-in-from-top-2">
+                  {error}
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <Label htmlFor="name" className="font-semibold text-forest">Full Name</Label>
+                <Input id="name" name="name" type="text" value={formData.name} onChange={handleChange} className="h-11 rounded-xl border-stone bg-alabaster/50 text-forest placeholder:text-forest/40 focus-visible:ring-forest focus-visible:border-forest" placeholder="Your full name" required />
               </div>
-            )}
 
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">Full Name</label>
-              <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} className="input-field" placeholder="Your full name" required />
+              <div className="space-y-1.5">
+                <Label htmlFor="signup-email" className="font-semibold text-forest">Email</Label>
+                <Input id="signup-email" name="email" type="email" value={formData.email} onChange={handleChange} className="h-11 rounded-xl border-stone bg-alabaster/50 text-forest placeholder:text-forest/40 focus-visible:ring-forest focus-visible:border-forest" placeholder="you@example.com" required />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="phone" className="font-semibold text-forest">Phone <span className="text-forest/50 font-normal">(optional)</span></Label>
+                <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} className="h-11 rounded-xl border-stone bg-alabaster/50 text-forest placeholder:text-forest/40 focus-visible:ring-forest focus-visible:border-forest" placeholder="+91 98765 43210" />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="societyId" className="font-semibold text-forest">Society ID</Label>
+                <Input id="societyId" name="societyId" type="text" value={formData.societyId} onChange={handleChange} className="h-11 rounded-xl border-stone bg-alabaster/50 text-forest placeholder:text-forest/40 focus-visible:ring-forest focus-visible:border-forest" placeholder="Ask your society admin for this ID" required />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="unitId" className="font-semibold text-forest">Unit / Flat ID <span className="text-forest/50 font-normal">(optional)</span></Label>
+                <Input id="unitId" name="unitId" type="text" value={formData.unitId} onChange={handleChange} className="h-11 rounded-xl border-stone bg-alabaster/50 text-forest placeholder:text-forest/40 focus-visible:ring-forest focus-visible:border-forest" placeholder="Your flat/unit ID" />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="signup-password" className="font-semibold text-forest">Password</Label>
+                <Input id="signup-password" name="password" type="password" value={formData.password} onChange={handleChange} className="h-11 rounded-xl border-stone bg-alabaster/50 text-forest placeholder:text-forest/40 focus-visible:ring-forest focus-visible:border-forest" placeholder="Min 8 chars, uppercase, lowercase, digit, special" required />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="confirmPassword" className="font-semibold text-forest">Confirm Password</Label>
+                <Input id="confirmPassword" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} className="h-11 rounded-xl border-stone bg-alabaster/50 text-forest placeholder:text-forest/40 focus-visible:ring-forest focus-visible:border-forest" placeholder="Repeat your password" required />
+              </div>
+
+              <Button type="submit" disabled={isLoading} expression="full" className="w-full h-12 text-[15px] mt-2" id="signup-submit">
+                {isLoading ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Registering...
+                  </span>
+                ) : 'Register'}
+              </Button>
+            </form>
+
+            <div className="mt-6 text-center text-sm font-medium text-forest/70">
+              Already registered?{' '}
+              <Link href="/login" className="text-forest hover:text-forest/80 font-bold underline decoration-forest/30 underline-offset-4 transition-colors">
+                Sign in
+              </Link>
             </div>
-
-            <div>
-              <label htmlFor="signup-email" className="block text-sm font-medium mb-2">Email</label>
-              <input id="signup-email" name="email" type="email" value={formData.email} onChange={handleChange} className="input-field" placeholder="you@example.com" required />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium mb-2">Phone <span className="text-[var(--text-muted)]">(optional)</span></label>
-              <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} className="input-field" placeholder="+91 98765 43210" />
-            </div>
-
-            <div>
-              <label htmlFor="societyId" className="block text-sm font-medium mb-2">Society ID</label>
-              <input id="societyId" name="societyId" type="text" value={formData.societyId} onChange={handleChange} className="input-field" placeholder="Ask your society admin for this ID" required />
-            </div>
-
-            <div>
-              <label htmlFor="unitId" className="block text-sm font-medium mb-2">Unit / Flat ID <span className="text-[var(--text-muted)]">(optional)</span></label>
-              <input id="unitId" name="unitId" type="text" value={formData.unitId} onChange={handleChange} className="input-field" placeholder="Your flat/unit ID" />
-            </div>
-
-            <div>
-              <label htmlFor="signup-password" className="block text-sm font-medium mb-2">Password</label>
-              <input id="signup-password" name="password" type="password" value={formData.password} onChange={handleChange} className="input-field" placeholder="Min 8 chars, uppercase, lowercase, digit, special" required />
-            </div>
-
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">Confirm Password</label>
-              <input id="confirmPassword" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} className="input-field" placeholder="Repeat your password" required />
-            </div>
-
-            <button type="submit" disabled={isLoading} className="btn-brand w-full !py-3.5" id="signup-submit">
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Registering...
-                </span>
-              ) : 'Register'}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center text-sm text-[var(--text-secondary)]">
-            Already registered?{' '}
-            <Link href="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
-              Sign in
-            </Link>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
