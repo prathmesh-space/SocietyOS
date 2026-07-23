@@ -90,7 +90,7 @@ export default function ResidentPaymentsPage() {
   };
 
   return (
-    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-10 py-8">
+    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-6 md:space-y-10 py-4 md:py-8">
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       
       <div>
@@ -112,16 +112,16 @@ export default function ResidentPaymentsPage() {
         ) : (
           bills.map((bill) => (
             <Card key={bill._id} variant="full" className={bill.status === 'overdue' ? 'border-terracotta bg-terracotta/5' : ''}>
-              <CardContent className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-8">
+              <CardContent className="p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
                 <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <h3 className="font-playfair font-semibold text-2xl text-forest">Maintenance: {bill.billingPeriod}</h3>
-                    <Badge variant={bill.status === 'paid' ? 'success' : bill.status === 'overdue' ? 'destructive' : 'warning'} className="px-3 py-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <h3 className="font-playfair font-semibold text-xl md:text-2xl text-forest">Maintenance: {bill.billingPeriod}</h3>
+                    <Badge variant={bill.status === 'paid' ? 'success' : bill.status === 'overdue' ? 'destructive' : 'warning'} className="px-3 py-1 w-fit">
                       {bill.status.toUpperCase()}
                     </Badge>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 md:gap-x-12 gap-y-2 md:gap-y-3 text-sm">
                     <div>
                       <span className="text-forest/70">Base Amount:</span>
                       <span className="font-medium text-forest ml-2 tracking-wide">₹{bill.amount}</span>
@@ -139,8 +139,8 @@ export default function ResidentPaymentsPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end gap-4 border-t md:border-t-0 md:border-l border-stone pt-6 md:pt-0 md:pl-8 min-w-[200px]">
-                  <div className="text-right">
+                <div className="flex flex-col items-start md:items-end gap-4 border-t md:border-t-0 md:border-l border-stone pt-6 md:pt-0 md:pl-8 min-w-[200px]">
+                  <div className="text-left md:text-right">
                     <p className="text-xs text-forest/50 mb-1 uppercase tracking-widest font-semibold">Total Payable</p>
                     <p className="text-4xl font-playfair font-semibold text-forest">₹{bill.amount + bill.lateFeeAmount}</p>
                   </div>

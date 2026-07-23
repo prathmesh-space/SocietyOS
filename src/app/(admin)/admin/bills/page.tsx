@@ -155,7 +155,8 @@ export default function AdminBillsPage() {
                   <p className="text-sm text-forest/50 mt-1">Click the button above to generate this month&apos;s bills.</p>
                 </div>
               ) : (
-                <Table>
+                <div className="overflow-x-auto w-full pb-2">
+                  <Table className="min-w-[800px]">
                   <TableHeader className="bg-clay-light/30">
                     <TableRow className="border-stone hover:bg-transparent">
                       <TableHead className="text-forest font-semibold">Unit</TableHead>
@@ -185,7 +186,8 @@ export default function AdminBillsPage() {
                       </TableRow>
                     ))}
                   </TableBody>
-                </Table>
+                  </Table>
+                </div>
               )}
             </CardContent>
           </Card>

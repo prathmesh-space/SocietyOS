@@ -38,7 +38,7 @@ export default function HomePage() {
       </div>
 
       {/* Navigation */}
-      <nav className="relative z-10 flex items-center justify-between px-8 py-8 max-w-7xl mx-auto w-full">
+      <nav className="relative z-10 flex items-center justify-between px-4 py-4 md:px-8 md:py-8 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full flex items-center justify-center bg-forest text-alabaster">
             <Leaf strokeWidth={1.5} size={20} />
@@ -56,7 +56,7 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <main className="relative z-10 flex-1 flex flex-col items-center px-8 text-center pt-24 pb-32">
+      <main className="relative z-10 flex-1 flex flex-col items-center px-4 pt-12 pb-16 md:px-8 md:pt-24 md:pb-32 text-center">
         <div className="animate-fade-in max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-3 rounded-full border border-sage px-5 py-2 mb-12 bg-white/50 backdrop-blur-sm">
             <div className="w-1.5 h-1.5 rounded-full bg-sage" />
@@ -70,7 +70,7 @@ export default function HomePage() {
             <span className="italic font-normal">Digitized.</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-forest/80 max-w-2xl mx-auto mb-16 leading-relaxed">
+          <p className="text-lg md:text-xl text-forest/80 max-w-2xl mx-auto mb-10 md:mb-16 leading-relaxed">
             Replace chaotic groups, paper registers, and manual ledgers with a
             single platform that handles billing, payments, complaints, and visitor
             access with effortless grace.
@@ -92,7 +92,7 @@ export default function HomePage() {
         </div>
 
         {/* Feature Cards with Staggered Organic Grid */}
-        <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-6xl w-full px-4">
+        <div className="mt-16 md:mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-6xl w-full px-4">
           {[
             {
               icon: <div className="w-14 h-14 rounded-t-[20px] rounded-b-xl flex items-center justify-center bg-clay-light text-forest mb-6"><svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg></div>,
@@ -131,7 +131,7 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 py-12 text-center text-sm text-forest/50 font-medium tracking-wide border-t border-stone/50 mt-12 mx-8">
+      <footer className="relative z-10 py-8 mx-4 md:py-12 md:mx-8 text-center text-sm text-forest/50 font-medium tracking-wide border-t border-stone/50 mt-12">
         Crafted for Indian Housing Societies &bull; SocietyOS
       </footer>
     </div>

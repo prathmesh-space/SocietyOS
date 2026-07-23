@@ -35,14 +35,14 @@ export default function SuperAdminLayout({
       {/* Mobile sidebar backdrop */}
       {isMobileOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-forest/20 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-forest/20 backdrop-blur-sm md:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-stone transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:w-64 flex flex-col ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-stone transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:w-64 flex flex-col ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -50,7 +50,7 @@ export default function SuperAdminLayout({
           <span className="text-xl font-semibold tracking-tight text-forest">
             SocietyOS Admin
           </span>
-          <button className="lg:hidden text-forest/50 hover:text-forest" onClick={() => setIsMobileOpen(false)}>
+          <button className="md:hidden text-forest/50 hover:text-forest" onClick={() => setIsMobileOpen(false)}>
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -95,7 +95,7 @@ export default function SuperAdminLayout({
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top header for mobile */}
-        <header className="lg:hidden bg-white border-b border-stone h-16 flex items-center justify-between px-4">
+        <header className="md:hidden bg-white border-b border-stone h-16 flex items-center justify-between px-4">
           <span className="text-lg font-semibold tracking-tight text-forest">SocietyOS</span>
           <button
             onClick={() => setIsMobileOpen(true)}
@@ -105,7 +105,7 @@ export default function SuperAdminLayout({
           </button>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
           {children}
         </main>
       </div>

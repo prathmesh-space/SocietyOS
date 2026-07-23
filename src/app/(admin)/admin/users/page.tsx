@@ -120,7 +120,8 @@ export default function AdminUsersPage() {
               <p className="text-sm text-forest/50 mt-1">Try changing the filter or invite residents.</p>
             </div>
           ) : (
-            <Table>
+            <div className="overflow-x-auto w-full pb-2">
+              <Table className="min-w-[800px]">
               <TableHeader className="bg-clay-light/30">
                 <TableRow className="border-stone hover:bg-transparent">
                   <TableHead className="text-forest font-semibold">Name</TableHead>
@@ -183,7 +184,8 @@ export default function AdminUsersPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

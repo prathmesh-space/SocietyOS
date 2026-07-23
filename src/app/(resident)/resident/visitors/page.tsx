@@ -74,7 +74,7 @@ export default function ResidentVisitorsPage() {
   };
 
   return (
-    <div className="animate-in fade-in duration-500 max-w-2xl mx-auto space-y-8 py-8">
+    <div className="animate-in fade-in duration-500 max-w-2xl mx-auto space-y-6 md:space-y-8 py-4 md:py-8">
       <div>
         <h1 className="text-4xl font-playfair font-semibold text-forest">Pre-approve Visitor</h1>
         <p className="text-lg text-forest/70 mt-2">Generate a secure gate pass QR code for your guests.</p>
@@ -82,12 +82,12 @@ export default function ResidentVisitorsPage() {
 
       {qrCodeData ? (
         <Card variant="full" className="overflow-hidden text-center border-0 shadow-soft-lg">
-          <div className="bg-forest p-6 text-alabaster">
-            <h3 className="font-playfair font-semibold text-2xl tracking-wide">Gate Pass Approved</h3>
+          <div className="bg-forest p-4 md:p-6 text-alabaster">
+            <h3 className="font-playfair font-semibold text-xl md:text-2xl tracking-wide">Gate Pass Approved</h3>
             <p className="text-alabaster/70 text-sm mt-1 uppercase tracking-widest">For {qrCodeData.visitorName}</p>
           </div>
-          <CardContent className="p-8 space-y-8 bg-clay-light/20">
-            <div className="bg-white p-6 rounded-3xl inline-block shadow-soft-md border border-stone">
+          <CardContent className="p-6 md:p-8 space-y-6 md:space-y-8 bg-clay-light/20">
+            <div className="bg-white p-4 md:p-6 rounded-3xl inline-block shadow-soft-md border border-stone">
               {qrImageUrl ? (
                 <img src={qrImageUrl} alt="QR Code" className="w-56 h-56 mx-auto rounded-xl" />
               ) : (

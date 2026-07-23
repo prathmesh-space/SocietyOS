@@ -78,7 +78,7 @@ export default function ResidentComplaintsPage() {
   };
 
   return (
-    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-10 py-8">
+    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-6 md:space-y-10 py-4 md:py-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
           <h1 className="text-4xl font-playfair font-semibold text-forest">Helpdesk</h1>
@@ -87,7 +87,7 @@ export default function ResidentComplaintsPage() {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="gap-2">
+            <Button className="w-full sm:w-auto gap-2">
               <Plus className="w-5 h-5" />
               New Ticket
             </Button>
@@ -155,11 +155,11 @@ export default function ResidentComplaintsPage() {
         ) : (
           complaints.map(complaint => (
             <Card key={complaint._id} variant="full">
-              <CardContent className="p-8">
+              <CardContent className="p-6 md:p-8">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                   <div className="space-y-3 flex-1">
                     <div className="flex items-center gap-4 mb-2">
-                      <h3 className="text-2xl font-playfair font-semibold text-forest">{complaint.title}</h3>
+                      <h3 className="text-xl md:text-2xl font-playfair font-semibold text-forest">{complaint.title}</h3>
                       <Badge variant="outline" className="bg-clay-light text-forest border-stone">{complaint.category}</Badge>
                     </div>
                     <p className="text-forest/80 whitespace-pre-wrap leading-relaxed">{complaint.description}</p>

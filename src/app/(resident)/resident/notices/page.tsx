@@ -37,7 +37,7 @@ export default function ResidentNoticesPage() {
   };
 
   return (
-    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-10 py-8">
+    <div className="animate-in fade-in duration-500 max-w-5xl mx-auto space-y-6 md:space-y-10 py-4 md:py-8">
       <div>
         <h1 className="text-4xl font-playfair font-semibold text-forest">Notice Board</h1>
         <p className="text-lg text-forest/70 mt-2">Stay updated with the latest announcements from the society.</p>
@@ -57,14 +57,14 @@ export default function ResidentNoticesPage() {
         ) : (
           notices.map(notice => (
             <Card key={notice._id} variant="full" className={notice.isImportant ? 'border-terracotta bg-terracotta/5 shadow-soft-md' : ''}>
-              <CardContent className="p-8 flex flex-col sm:flex-row gap-8">
+              <CardContent className="p-6 md:p-8 flex flex-col sm:flex-row gap-6 md:gap-8">
                 <div className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${notice.isImportant ? 'bg-terracotta/10 text-terracotta' : 'bg-sage/20 text-forest'}`}>
                   <Megaphone className="w-6 h-6" />
                 </div>
                 <div className="flex-1 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <h3 className="text-2xl font-playfair font-semibold text-forest">{notice.title}</h3>
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4">
+                      <h3 className="text-xl md:text-2xl font-playfair font-semibold text-forest">{notice.title}</h3>
                       {notice.isImportant && <Badge variant="destructive" className="px-3 py-1 text-xs">Important</Badge>}
                     </div>
                     <div className="flex items-center gap-2 text-xs font-medium text-forest/70 bg-clay-light px-3 py-1.5 rounded-full">
@@ -72,7 +72,7 @@ export default function ResidentNoticesPage() {
                       {new Date(notice.createdAt).toLocaleDateString()}
                     </div>
                   </div>
-                  <p className="text-forest/80 whitespace-pre-wrap leading-relaxed text-base">{notice.body}</p>
+                  <p className="text-forest/80 whitespace-pre-wrap leading-relaxed text-sm md:text-base">{notice.body}</p>
                   
                   {notice.expiryDate && (
                     <p className="text-sm text-terracotta/80 pt-2 flex items-center gap-2 font-medium">

@@ -67,7 +67,7 @@ export default function LoginPage() {
 
         {/* Login Form */}
         <Card variant="full" className="bg-white/80 backdrop-blur-sm border-stone/50 shadow-soft-md">
-          <CardContent className="p-8 pt-8">
+          <CardContent className="p-6 pt-6 md:p-8 md:pt-8">
             <form onSubmit={handleSubmit} className="space-y-5" id="login-form">
               {error && (
                 <div className="rounded-xl bg-terracotta/10 border border-terracotta/20 px-4 py-3 text-sm text-terracotta font-medium animate-in slide-in-from-top-2">

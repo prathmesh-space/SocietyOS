@@ -66,7 +66,7 @@ export default function SignupPage() {
       <div className="relative min-h-screen flex items-center justify-center px-4 bg-alabaster text-forest font-sans selection:bg-clay-light">
         <div className="relative z-10 w-full max-w-md text-center animate-in zoom-in-95 duration-500">
           <Card variant="full" className="bg-white/80 backdrop-blur-sm border-stone/50 shadow-soft-md">
-            <CardContent className="p-8">
+            <CardContent className="p-6 md:p-8">
               <div className="w-16 h-16 rounded-full bg-sage/10 flex items-center justify-center mx-auto mb-6 shadow-sm border border-stone">
                 <svg className="w-8 h-8 text-sage-text" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -90,7 +90,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 py-12 bg-alabaster text-forest font-sans selection:bg-clay-light">
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-8 md:py-12 bg-alabaster text-forest font-sans selection:bg-clay-light">
       <div className="relative z-10 w-full max-w-md animate-in fade-in duration-500 slide-in-from-bottom-4">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
@@ -109,7 +109,7 @@ export default function SignupPage() {
         </div>
 
         <Card variant="full" className="bg-white/80 backdrop-blur-sm border-stone/50 shadow-soft-md">
-          <CardContent className="p-8 pt-8">
+          <CardContent className="p-6 pt-6 md:p-8 md:pt-8">
             <form onSubmit={handleSubmit} className="space-y-4" id="signup-form">
               {error && (
                 <div className="rounded-xl bg-terracotta/10 border border-terracotta/20 px-4 py-3 text-sm text-terracotta font-medium animate-in slide-in-from-top-2">

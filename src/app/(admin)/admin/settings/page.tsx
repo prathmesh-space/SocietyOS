@@ -129,7 +129,7 @@ export default function AdminSettingsPage() {
             <CardDescription>Basic details managed by Super Admin.</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-2 gap-4 opacity-70 pointer-events-none">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-70 pointer-events-none">
               <div>
                 <Label>Society ID</Label>
                 <div className="flex gap-2">
@@ -155,7 +155,7 @@ export default function AdminSettingsPage() {
                 <Label>Society Name</Label>
                 <Input value={settings.name} readOnly className="h-9 rounded-md border-stone" />
               </div>
-              <div className="col-span-2">
+              <div className="md:col-span-2">
                 <Label>Location</Label>
                 <Input value={`${settings.city}, ${settings.state} - ${settings.pincode}`} readOnly className="h-9 rounded-md border-stone" />
               </div>
@@ -179,8 +179,8 @@ export default function AdminSettingsPage() {
               />
             </div>
             
-            <div className="grid grid-cols-3 gap-4 p-4 border border-stone rounded-md bg-clay-light/20">
-              <div className="col-span-3 pb-2 border-b border-stone mb-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 border border-stone rounded-md bg-clay-light/20">
+              <div className="sm:col-span-3 pb-2 border-b border-stone mb-2">
                 <h4 className="font-semibold text-sm text-forest">Late Fee Rules</h4>
               </div>
               <div className="space-y-2">
@@ -230,8 +230,8 @@ export default function AdminSettingsPage() {
           <CardContent className="pt-6">
             <div className="space-y-4">
               {formData.emergencyContacts?.map((contact, index) => (
-                <div key={index} className="flex items-center gap-4 p-4 bg-white border border-stone rounded-md shadow-sm">
-                  <div className="flex-1 space-y-2">
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-white border border-stone rounded-md shadow-sm">
+                  <div className="flex-1 w-full space-y-2">
                     <Label>Name</Label>
                     <Input 
                       placeholder="e.g. Main Gate Security" 
@@ -258,7 +258,7 @@ export default function AdminSettingsPage() {
                       className="h-9 rounded-md border-stone"
                     />
                   </div>
-                  <div className="pt-6">
+                  <div className="sm:pt-6 self-end sm:self-auto">
                     <Button expression="compact" variant="ghost" size="icon" className="text-terracotta hover:text-terracotta/80 hover:bg-terracotta/10 rounded-md" onClick={() => removeEmergencyContact(index)}>
                       <Trash2 className="w-4 h-4" />
                     </Button>

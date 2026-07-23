@@ -60,7 +60,8 @@ export default function AdminAuditLogPage() {
               <p className="text-sm text-forest/50 mt-1">System activity will appear here.</p>
             </div>
           ) : (
-            <Table>
+            <div className="overflow-x-auto w-full pb-2">
+              <Table className="min-w-[800px]">
               <TableHeader className="bg-clay-light/30">
                 <TableRow className="border-stone hover:bg-transparent">
                   <TableHead className="text-forest font-semibold">Timestamp</TableHead>
@@ -98,7 +99,8 @@ export default function AdminAuditLogPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

@@ -140,12 +140,12 @@ export default function SuperAdminDashboard() {
             ) : (
               <form onSubmit={handleCreateSociety} className="space-y-4 py-4">
                 {error && <div className="p-3 bg-terracotta/10 text-terracotta text-sm rounded-md border border-terracotta/20">{error}</div>}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2 space-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2 space-y-2">
                     <Label htmlFor="name">Society Name</Label>
                     <Input id="name" required placeholder="e.g. Sunshine Apartments" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="h-9 rounded-md border-stone" />
                   </div>
-                  <div className="col-span-2 space-y-2">
+                  <div className="sm:col-span-2 space-y-2">
                     <Label htmlFor="address">Address</Label>
                     <Input id="address" required placeholder="123 Main St" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} className="h-9 rounded-md border-stone" />
                   </div>
@@ -166,7 +166,7 @@ export default function SuperAdminDashboard() {
                     <Input id="registrationNumber" value={formData.registrationNumber} onChange={(e) => setFormData({...formData, registrationNumber: e.target.value})} className="h-9 rounded-md border-stone" />
                   </div>
                   
-                  <div className="col-span-2 mt-4 mb-2">
+                  <div className="sm:col-span-2 mt-4 mb-2">
                     <h4 className="text-sm font-semibold text-forest border-b border-stone pb-2">First Admin Details</h4>
                   </div>
                   <div className="space-y-2">
@@ -206,7 +206,8 @@ export default function SuperAdminDashboard() {
               <p className="text-forest/60 mt-1">Get started by onboarding a new society.</p>
             </div>
           ) : (
-            <Table>
+            <div className="overflow-x-auto w-full pb-2">
+              <Table className="min-w-[800px]">
               <TableHeader className="bg-clay-light/30">
                 <TableRow className="border-stone hover:bg-transparent">
                   <TableHead className="text-forest font-semibold">Society Name</TableHead>
@@ -237,7 +238,8 @@ export default function SuperAdminDashboard() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

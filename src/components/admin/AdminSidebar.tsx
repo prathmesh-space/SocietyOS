@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { useState, useEffect } from 'react';
 
 import { 
   LayoutDashboard, 
@@ -13,7 +14,9 @@ import {
   Megaphone, 
   ShieldAlert, 
   Settings,
-  Leaf
+  Leaf,
+  Menu,
+  X
 } from 'lucide-react';
 
 const navItems = [
@@ -30,21 +33,47 @@ const navItems = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 border-r border-stone bg-white flex flex-col z-20">
-      {/* Logo */}
-      <div className="px-6 py-5 border-b border-stone bg-clay-light/30">
-        <Link href="/admin/dashboard" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-md flex items-center justify-center bg-forest text-alabaster">
-            <Leaf strokeWidth={1.5} size={16} />
-          </div>
-          <div>
-            <span className="font-semibold text-lg text-forest tracking-tight">SocietyOS</span>
-            <span className="block text-[10px] uppercase tracking-widest text-forest/50 font-medium">Admin Panel</span>
-          </div>
-        </Link>
-      </div>
+    <>
+      {/* Mobile Header */}
+      <header className="md:hidden bg-white border-b border-stone h-14 flex items-center justify-between px-4 sticky top-0 z-20 shadow-sm w-full">
+        <span className="text-lg font-playfair font-semibold text-forest">SocietyOS Admin</span>
+        <button onClick={() => setIsMobileOpen(true)} className="p-2 text-forest/70 hover:text-forest">
+          <Menu className="w-6 h-6" />
+        </button>
+      </header>
+
+      {/* Mobile Backdrop */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-forest/20 backdrop-blur-sm md:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`fixed left-0 top-0 h-screen w-64 border-r border-stone bg-white flex flex-col z-40 transition-transform duration-300 md:translate-x-0 ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        {/* Logo */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-stone bg-clay-light/30">
+          <Link href="/admin/dashboard" className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-md flex items-center justify-center bg-forest text-alabaster">
+              <Leaf strokeWidth={1.5} size={16} />
+            </div>
+            <div>
+              <span className="font-semibold text-lg text-forest tracking-tight">SocietyOS</span>
+              <span className="block text-[10px] uppercase tracking-widest text-forest/50 font-medium">Admin Panel</span>
+            </div>
+          </Link>
+          <button className="md:hidden text-forest/50 hover:text-forest" onClick={() => setIsMobileOpen(false)}>
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
@@ -91,5 +120,6 @@ export default function AdminSidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

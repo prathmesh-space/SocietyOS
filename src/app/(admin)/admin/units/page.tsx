@@ -127,7 +127,7 @@ export default function AdminUnitsPage() {
               <form onSubmit={handleCreateUnit} className="space-y-4 py-4">
                 {error && <div className="p-3 bg-terracotta/10 text-terracotta text-sm rounded-md border border-terracotta/20">{error}</div>}
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="unitNumber">Unit Number</Label>
                     <Input id="unitNumber" required placeholder="e.g. 101" value={formData.unitNumber} onChange={(e) => setFormData({...formData, unitNumber: e.target.value})} className="h-9 rounded-md" />
@@ -144,7 +144,7 @@ export default function AdminUnitsPage() {
                     <Label htmlFor="type">Configuration</Label>
                     <Input id="type" required placeholder="e.g. 2BHK" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} className="h-9 rounded-md" />
                   </div>
-                  <div className="col-span-2 space-y-2">
+                  <div className="sm:col-span-2 space-y-2">
                     <Label htmlFor="squareFeet">Size (Sq. Ft.)</Label>
                     <Input id="squareFeet" type="number" required value={formData.squareFeet} onChange={(e) => setFormData({...formData, squareFeet: Number(e.target.value)})} className="h-9 rounded-md" />
                   </div>
@@ -188,8 +188,9 @@ export default function AdminUnitsPage() {
               <p className="text-sm text-forest/50 mt-1">Add units to your society to get started.</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader className="bg-clay-light/30">
+            <div className="overflow-x-auto w-full pb-2">
+              <Table className="min-w-[800px]">
+                <TableHeader className="bg-clay-light/30">
                 <TableRow className="border-stone hover:bg-transparent">
                   <TableHead className="text-forest font-semibold">Unit</TableHead>
                   <TableHead className="text-forest font-semibold">Configuration</TableHead>
@@ -241,7 +242,8 @@ export default function AdminUnitsPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>
